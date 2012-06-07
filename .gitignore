@@ -4,3 +4,10 @@
 *.jar
 *.war
 *.ear
+
+# Play framework files #
+/tmp
+/modules
+/lib
+/test-result
+/logs

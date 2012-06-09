@@ -1,6 +1,7 @@
 package utils;
 
 import java.io.File;
+import java.math.BigInteger;
 
 /**
  * User: divxer
@@ -8,6 +9,15 @@ import java.io.File;
  * Time: 下午9:15
  */
 public class UpYunUtils {
+    public static String picBedDomain = "http://wadianying.b0.upaiyun.com";
+
+    public static String getTinyUrl(String pictureId) {
+        BaseX bx = new BaseX(BaseX.DICTIONARY_32_SMALL);
+        String encoded = bx.encode(new BigInteger(pictureId));
+
+        return encoded;
+    }
+
     public static boolean saveImg2Upyun(String upYunDirName, String pictureLocation) {
         System.out.println("upYunDirName=" + upYunDirName + "; pictureLocation=" + pictureLocation);
 

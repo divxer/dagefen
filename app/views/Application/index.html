@@ -1,4 +1,81 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-#{welcome /}
+#{set 'moreStyles'}
+    #{get 'moreStyles' /}
+    <style type="text/css">
+        .box {
+            margin: 5px;
+            padding: 5px;
+            font-size: 11px;
+            line-height: 1.4em;
+            float: left;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+        }
+
+        .box h2 {
+            font-size: 14px;
+            font-weight: 200;
+        }
+
+        .box img,
+        #tumblelog img {
+            display: block;
+            width: 100%;
+        }
+    </style>
+#{/set}
+
+#{set 'moreScripts'}
+    #{get 'moreScripts' /}
+    <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+    <script>
+        $(function(){
+
+            var $container = $('#album-list');
+
+            $container.imagesLoaded(function(){
+//                $('#loading').remove();
+
+                $container.masonry({
+                    itemSelector: '.box'//,
+//                    columnWidth: 100
+                });
+            });
+
+//            $container.infinitescroll({
+//                        navSelector  : '#page-nav',    // selector for the paged navigation
+//                        nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+//                        itemSelector : '.post-home',     // selector for all items you'll retrieve
+//                        loading: {
+//                            finishedMsg: 'No more pages to load.',
+//                            img: 'http://i.imgur.com/6RMhx.gif'
+//                        }
+//                    },
+//                    // trigger Masonry as a callback
+//                    function( newElements ) {
+//                        // hide new items while they are loading
+//                        var $newElems = $( newElements ).css({ opacity: 0 });
+//                        // ensure that images load before adding to masonry layout
+//                        $newElems.imagesLoaded(function(){
+//                            // show elems now they're ready
+//                            $newElems.animate({ opacity: 1 });
+//                            $container.masonry( 'appended', $newElems, true );
+//                        });
+//                    }
+//            );
+        });
+    </script>
+#{/set}
+
+<div id="album-list" class="clearfix masonry">
+    #{list items:albumList, as:'_album'}
+        <div class="box thumbnail span3 masonry-brick">
+            <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
+                <img src="${_album.thumbnail}" alt="${_album.title}">
+            </a>
+        </div>
+    #{/list}
+</div>

@@ -1,0 +1,18 @@
+#{extends 'main.html' /}
+#{set title:'图片信息' /}
+
+<div class="span6 offset3">
+    <ul class="thumbnails">
+        <li class="span6">
+            <div class="thumbnail">
+                <a href="" title="${picture.title}" target="_self">
+                    <img src="${picture.fileName}" alt="${picture.title}">
+                </a>
+                <div class="caption">
+                    <h5>${picture.title}</h5>
+                    <p>${picture.description}</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -37,8 +37,6 @@ import java.util.regex.Pattern;
 //@Every("12hr")
 @OnApplicationStart
 public class MmonlyCrawler extends Job {
-    private static String picBedDomain = "http://wadianying.b0.upaiyun.com";
-
     public void doJob() {
         System.out.println("");
 
@@ -206,7 +204,7 @@ public class MmonlyCrawler extends Job {
         Album savedAlbum = album.save();
 
         String upYunDirName = getTinyUrl(savedAlbum.id.toString());
-        String fileUrl = picBedDomain + "/" + upYunDirName + "/" + file.getName();
+        String fileUrl = UpYunUtils.picBedDomain + "/" + upYunDirName + "/" + file.getName();
 
         // 事务提交，并开启新事务
         JPA.em().getTransaction().commit();

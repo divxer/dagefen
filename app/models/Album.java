@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class Album extends Model {
     public String type;
     public String source;
     public String thumbnail;
+    public Date updateTime;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     public List<Picture> pictures = new ArrayList<Picture>();
@@ -28,5 +30,6 @@ public class Album extends Model {
         this.title = title;
         this.description = description;
         this.type = type;
+        this.updateTime = new Date();
     }
 }

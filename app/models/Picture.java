@@ -5,6 +5,7 @@ import play.db.jpa.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 /**
  * User: divxer
@@ -18,6 +19,7 @@ public class Picture extends Model {
     public String fileName;
     public String source;
     public boolean upload2upyun;
+    public Date updateTime;
 
     @ManyToOne
     @Required
@@ -29,5 +31,6 @@ public class Picture extends Model {
         this.fileName = fileName;
         this.source = source;
         this.album = album;
+        this.updateTime = new Date();
     }
 }

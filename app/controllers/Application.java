@@ -9,10 +9,10 @@ import models.*;
 
 public class Application extends Controller {
 
-    public static void index() {
+    public static void index(int page) {
         List<Album> albumList = Album.find(
                 "order by id desc"
-        ).fetch(8);
+        ).fetch(page == 0 ? 1 : page, 12);
 
         render(albumList);
     }

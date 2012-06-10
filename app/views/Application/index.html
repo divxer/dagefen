@@ -20,6 +20,23 @@
             font-weight: 200;
         }
 
+        /* Infinite Scroll loader */
+        #infscr-loading {
+            text-align: center;
+            z-index: 100;
+            position: fixed;
+            left: 45%;
+            bottom: 40px;
+            width: 200px;
+            padding: 10px;
+            background: #000;
+            opacity: 0.8;
+            color: #FFF;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+        }
+
         .box img,
         #tumblelog img {
             display: block;
@@ -31,13 +48,14 @@
 #{set 'moreScripts'}
     #{get 'moreScripts' /}
     <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+    <script src="@{'/public/javascripts/jquery.infinitescroll.min.js'}"></script>
     <script>
         $(function(){
 
             var $container = $('#album-list');
 
             $container.imagesLoaded(function(){
-//                $('#loading').remove();
+                $('#loading').remove();
 
                 $container.masonry({
                     itemSelector: '.box'//,
@@ -45,27 +63,27 @@
                 });
             });
 
-//            $container.infinitescroll({
-//                        navSelector  : '#page-nav',    // selector for the paged navigation
-//                        nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
-//                        itemSelector : '.post-home',     // selector for all items you'll retrieve
-//                        loading: {
-//                            finishedMsg: 'No more pages to load.',
-//                            img: 'http://i.imgur.com/6RMhx.gif'
-//                        }
-//                    },
-//                    // trigger Masonry as a callback
-//                    function( newElements ) {
-//                        // hide new items while they are loading
-//                        var $newElems = $( newElements ).css({ opacity: 0 });
-//                        // ensure that images load before adding to masonry layout
-//                        $newElems.imagesLoaded(function(){
-//                            // show elems now they're ready
-//                            $newElems.animate({ opacity: 1 });
-//                            $container.masonry( 'appended', $newElems, true );
-//                        });
-//                    }
-//            );
+            $container.infinitescroll({
+                        navSelector  : '#page-nav',    // selector for the paged navigation
+                        nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
+                        itemSelector : '.box',     // selector for all items you'll retrieve
+                        loading: {
+                            finishedMsg: '没有了...',
+                            img: 'http://i.imgur.com/6RMhx.gif'
+                        }
+                    },
+                    // trigger Masonry as a callback
+                    function( newElements ) {
+                        // hide new items while they are loading
+                        var $newElems = $( newElements ).css({ opacity: 0 });
+                        // ensure that images load before adding to masonry layout
+                        $newElems.imagesLoaded(function(){
+                            // show elems now they're ready
+                            $newElems.animate({ opacity: 1 });
+                            $container.masonry( 'appended', $newElems, true );
+                        });
+                    }
+            );
         });
     </script>
 #{/set}
@@ -79,3 +97,7 @@
         </div>
     #{/list}
 </div>
+
+<nav id="page-nav">
+    <a href="@{Application.index(2)}"></a>
+</nav>

@@ -6,37 +6,41 @@
     <link href="@{'/public/stylesheets/carousel.css'}" rel="stylesheet">
 #{/set}
 
-#{set 'moreScripts'}
-    #{get 'moreScripts' /}
-<script src="@{'/public/javascripts/carousel.js'}"></script>
-<script>
-    $(function(){
-        carouselInstance = $("#carousel-gallery").touchCarousel({
-            itemsPerPage: 1,
-            scrollbar: true,
-            scrollbarAutoHide: true,
-            scrollbarTheme: "dark",
-            pagingNav: false,
-            snapToItems: false,
-            scrollToLast: true,
-            useWebkit3d: true,
-            loopItems: false
-        }).data('touchCarousel');
-    });
-</script>
-#{/set}
-
-
-<div id="carousel-ajax-container" style="height: 430px; width: 100%; ">
+<div id="carousel-container" style="height: 430px; width: 100%; ">
     <div id="carousel-gallery" class="touchcarousel  black-and-white">
         <ul class="touchcarousel-container">
-            #{list items:album.pictures, as:'_picture'}
-                <li class="touchcarousel-item">
-                    <a href="@{Pictures.show(_picture.id)}" title="拖动浏览，点击查看大图" target="_blank">
-                        <img src="${_picture.fileName}" alt="${_picture.title}" height="400" >
-                    </a>
-                </li>
-            #{/list}
+        #{list items:album.pictures, as:'_picture'}
+            <li class="touchcarousel-item">
+                <a href="@{Pictures.show(_picture.id)}" title="拖动浏览，点击查看大图" target="_blank">
+                    <img src="${_picture.fileName}" alt="${_picture.title}" height="400" >
+                </a>
+            </li>
+        #{/list}
         </ul>
     </div>
 </div>
+
+#{set 'moreScripts'}
+    #{get 'moreScripts' /}
+<script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+<script src="@{'/public/javascripts/carousel.js'}"></script>
+<script>
+    $(function(){
+        var $container = $('#carousel-container');
+
+        $container.imagesLoaded(function(){
+            carouselInstance = $("#carousel-gallery").touchCarousel({
+                itemsPerPage: 1,
+                scrollbar: true,
+                scrollbarAutoHide: true,
+                scrollbarTheme: "dark",
+                pagingNav: false,
+                snapToItems: false,
+                scrollToLast: true,
+                useWebkit3d: true,
+                loopItems: false
+            }).data('touchCarousel');
+        });
+    });
+</script>
+#{/set}

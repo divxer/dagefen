@@ -3,6 +3,7 @@
 
 #{set 'moreStyles'}
     #{get 'moreStyles' /}
+    <link href="@{'/public/stylesheets/carousel.css'}" rel="stylesheet">
 <style type="text/css">
     .box {
         margin: 5px;
@@ -31,6 +32,7 @@
 #{set 'moreScripts'}
     #{get 'moreScripts' /}
 <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+<script src="@{'/public/javascripts/carousel.js'}"></script>
 <script>
     $(function(){
 
@@ -42,20 +44,33 @@
 //                columnWidth: 100
             });
         });
+
+        carouselInstance = $("#carousel-gallery").touchCarousel({
+            itemsPerPage: 1,
+            scrollbar: true,
+            scrollbarAutoHide: true,
+            scrollbarTheme: "dark",
+            pagingNav: false,
+            snapToItems: false,
+            scrollToLast: true,
+            useWebkit3d: true,
+            loopItems: false
+        }).data('touchCarousel');
     });
 </script>
 #{/set}
 
-<div id="album-detail" class="clearfix masonry">
-#{list items:album.pictures, as:'_picture'}
-    <div class="box thumbnail span3 masonry-brick">
-        <a href="@{Pictures.show(_picture.id)}" title="${_picture.title}" target="_blank">
-            <img src="${_picture.fileName}" alt="${_picture.title}">
-        </a>
-        <div class="caption">
-            <h5>${_picture.title}</h5>
-            <p>${_picture.description}</p>
-        </div>
+
+<div id="carousel-ajax-container" style="height: 430px; width: 100%; ">
+    <div id="carousel-gallery" class="touchcarousel  black-and-white">
+        <ul class="touchcarousel-container">
+            #{list items:album.pictures, as:'_picture'}
+                <li class="touchcarousel-item">
+                    <a href="@{Pictures.show(_picture.id)}" title="拖动浏览，点击查看大图" target="_blank">
+                        <img src="${_picture.fileName}" alt="${_picture.title}" height="400" >
+                    </a>
+                </li>
+            #{/list}
+        </ul>
     </div>
-#{/list}
 </div>

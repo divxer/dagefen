@@ -42,11 +42,15 @@
         <div class="container">
             <a href="/" class="brand">打个分</a>
             <div class="nav-collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#">首页</a></li>
-                </ul>
-                <form class="navbar-search pull-left" action="">
-                    <input type="text" class="search-query span2" placeholder="搜索..." name="searchText" value="${searchText}">
+                <form id="search_form" class="search-element navbar-search pull-right">
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="input-append">
+                                <input id="keyword" type="text" class="input-medium search-query" placeholder="搜索..." name="searchText">
+                                <button class="btn-mini" type="submit"><i class="icon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
             <!--/.nav-collapse -->
@@ -61,8 +65,13 @@
     </div>
 </div>
 <!-- /container -->
+<hr>
 <footer>
-    <p>© 打个分 2012</p>
+    <div class="container">
+        <div class="span6 offset4">
+            <p>© 打个分 2012</p>
+        </div>
+    </div>
 </footer>
 
 <!-- Le javascript

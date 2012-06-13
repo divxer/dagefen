@@ -6,6 +6,13 @@
     <link href="@{'/public/stylesheets/carousel.css'}" rel="stylesheet">
 #{/set}
 
+<div class="alert alert-block alert-info">
+    <h3>${album.title}</h3>
+    <p>${album.description}</p>
+</div>
+
+<hr>
+
 <div id="carousel-container" style="height: 430px; width: 100%; ">
     <div id="carousel-gallery" class="touchcarousel  black-and-white">
         <ul class="touchcarousel-container">
@@ -22,25 +29,28 @@
 
 #{set 'moreScripts'}
     #{get 'moreScripts' /}
-<script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
-<script src="@{'/public/javascripts/carousel.js'}"></script>
-<script>
-    $(function(){
-        var $container = $('#carousel-container');
+    <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+    <script src="@{'/public/javascripts/carousel.js'}"></script>
+    <script>
+        $(function(){
+            var $container = $('#carousel-container');
 
-        $container.imagesLoaded(function(){
-            carouselInstance = $("#carousel-gallery").touchCarousel({
-                itemsPerPage: 1,
-                scrollbar: true,
-                scrollbarAutoHide: true,
-                scrollbarTheme: "dark",
-                pagingNav: false,
-                snapToItems: false,
-                scrollToLast: true,
-                useWebkit3d: true,
-                loopItems: false
-            }).data('touchCarousel');
+            $container.imagesLoaded(function(){
+                carouselInstance = $("#carousel-gallery").touchCarousel({
+                    autoplay:true,               // Autoplay enabled
+                    autoplayDelay:3000,	          // Delay between transitions
+                    autoplayStopAtAction:true,    // Stop autoplay forever when user clicks arrow or does any other action
+                    itemsPerPage: 1,
+                    scrollbar: true,
+                    scrollbarAutoHide: true,
+                    scrollbarTheme: "dark",
+                    pagingNav: true,
+                    snapToItems: true,
+                    scrollToLast: true,
+                    useWebkit3d: true,
+                    loopItems: true
+                }).data('touchCarousel');
+            });
         });
-    });
-</script>
+    </script>
 #{/set}

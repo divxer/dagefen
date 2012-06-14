@@ -109,7 +109,7 @@ public class MmonlyCrawler extends Job {
 
             Album album;
             if (Album.find("byTitle", title).fetch().size() == 0) {
-                album = new Album(title, description, "");
+                album = new Album(title, description, "", null);
             } else {
                 album = Album.find("byTitle", title).first();
             }

@@ -20,6 +20,7 @@ public class Picture extends Model {
     public String source;
     public boolean upload2upyun;
     public Date updateTime;
+    public String fileLink;
 
     @ManyToOne
     @Required

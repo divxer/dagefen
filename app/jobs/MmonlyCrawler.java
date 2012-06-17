@@ -214,6 +214,10 @@ public class MmonlyCrawler extends Job {
 
         // 保存图片到又拍云
         boolean upResult = UpYunUtils.saveImg2Upyun(upYunDirName, pictureLocation);
+        // 保存图片地址
+        if (upResult) {
+            picture.imgUrl = fileUrl;
+        }
         // 保存专辑缩略图地址
         if (upResult && album.thumbnail == null) {
             album.thumbnail = fileUrl;

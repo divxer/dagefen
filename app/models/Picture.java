@@ -18,9 +18,8 @@ public class Picture extends Model {
     public String description;
     public String fileName;
     public String source;
-    public boolean upload2upyun;
     public Date updateTime;
-    public String fileLink;
+    public String imgUrl;
 
     @ManyToOne
     @Required

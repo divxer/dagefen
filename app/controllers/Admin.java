@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.securesocial.SecureSocial;
 import models.User;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -10,7 +11,7 @@ import play.mvc.With;
  * Date: 12-6-15
  * Time: 下午11:19
  */
-@With(Secure.class)
+@With( SecureSocial.class )
 public class Admin extends Controller {
     @Before
     static void setConnectedUser() {

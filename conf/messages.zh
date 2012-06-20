@@ -5,20 +5,20 @@
 #
 # Login
 #
-securesocial.loginTitle=Log In
-securesocial.login=Log In
+securesocial.loginTitle=登录
+securesocial.login=登录
 securesocial.clickOnYourAccount=Use your existing account on one of the following networks to log in.
 securesocial.useEmailAndPassword=Or use a username and password.
-securesocial.email=Email Address
-securesocial.emailHelp=Eg: john.doe@gmail.com
-securesocial.password=Password
-securesocial.signUp=Sign up
-securesocial.wrongUserPass=Wrong email address and password combination.
+securesocial.email=电子邮箱
+securesocial.emailHelp=例如: john.doe@gmail.com
+securesocial.password=密码
+securesocial.signUp=注册
+securesocial.wrongUserPass=用户名和密码不匹配。
 securesocial.required=Required
-securesocial.invalidEmail=Enter a valid email address
+securesocial.invalidEmail=输入正确的电子邮箱
 securesocial.signUp=If you don't have an account with us yet you can sign up
 securesocial.here=here
-securesocial.badUserPasswordCombination=Wrong username and password combination
+securesocial.badUserPasswordCombination=用户名和密码不匹配。
 # [type] gets replaced by the provider id in the login page.
 # can't use %s because the string is being processed in javascript.
 securesocial.openIdUser=Username on [type]
@@ -28,17 +28,17 @@ securesocial.authError=There was an error while trying to log you in.  Please tr
 #
 # SignUp
 #
-securesocial.signUpTitle=Sign Up
+securesocial.signUpTitle=注册
 securesocial.signUpLabel=Complete the following form:
-securesocial.userName=Username
+securesocial.userName=用户名
 securesocial.name=Full Name
-securesocial.password2=Password confirmation
-securesocial.cancel=Cancel
+securesocial.password2=确认密码
+securesocial.cancel=取消
 securesocial.passwordsMustMatch=The passwords do not match
-securesocial.userNameTaken=This username is already taken
-securesocial.activationTitle=Welcome %s
+securesocial.userNameTaken=用户名已经被使用
+securesocial.activationTitle=欢迎 %s
 securesocial.activationSuccess=Thank you, your account has been activated. Click <a href="%s">here</a> to log in.
-securesocial.activateTitle=Account Activation
+securesocial.activateTitle=账号激活
 securesocial.errorCreatingAccount=There was an error creating your account. Please try again.
 securesocial.accountNotActive=Your account is not active. If you think this is an error please contact the administrator.
 securesocial.accountCreated=Your account has been created.  You should receive an activation email shortly.
@@ -53,16 +53,16 @@ securesocial.emailText=Follow this <a href="%s">link</a> to activate your accoun
 #
 # Password change
 #
-securesocial.changeTitle=Change password
+securesocial.changeTitle=修改密码
 securesocial.changeLabel=Enter your current password and the new password
 securesocial.changeError=There was an error changing the password. Please try again.
 securesocial.changeCurrentPasswordError=The entered password is incorrect
-securesocial.wrongPassword=Incorrect password
-securesocial.currentPassword=Current password
-securesocial.newPassword=New password
-securesocial.confirmPassword=Confirm new password
-securesocial.changeSuccess=Your password has been changed
-securesocial.changeSuccessTitle=The password has been successfully changed
+securesocial.wrongPassword=密码错误
+securesocial.currentPassword=当前密码
+securesocial.newPassword=新密码
+securesocial.confirmPassword=确认新密码
+securesocial.changeSuccess=您的密码已经修改完成
+securesocial.changeSuccessTitle=您的密码已经修改完成
 
 #
 # Password reset

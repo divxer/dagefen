@@ -5,6 +5,9 @@
 # Home page
 GET     /                                       Application.index
 
+# Secure Social
+*     /auth                       module:securesocial
+
 # Administration
 GET     /admin/?                                Admin.index
 *       /admin                                   module:crud

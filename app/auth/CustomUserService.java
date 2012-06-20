@@ -22,20 +22,32 @@ public class CustomUserService implements UserService.Service {
         if (id.provider.equals(ProviderType.userpass)) {
             User dagefenUser = User.find("byName", id.id).first();
             if (dagefenUser != null) {
-                SocialUser user = new SocialUser();
-                user.id = id;
-                user.email = dagefenUser.email;
-                user.password = dagefenUser.passWord;
-                user.displayName = dagefenUser.displayName;
-                user.authMethod = AuthenticationMethod.USER_PASSWORD;
-                user.isEmailVerified = dagefenUser.needConfirmation == null;
-                return user;
+                return convert2SocialUser(dagefenUser);
             }
         }
         return users.get(id.id + id.provider.toString());
     }
 
+    private SocialUser convert2SocialUser(User dagefenUser) {
+        UserId id = new UserId();
+        id.id = dagefenUser.name;
+        id.provider = ProviderType.userpass;
+        SocialUser user = new SocialUser();
+        user.id = id;
+        user.email = dagefenUser.email;
+        user.password = dagefenUser.passWord;
+        user.displayName = dagefenUser.displayName;
+        user.authMethod = AuthenticationMethod.USER_PASSWORD;
+        user.isEmailVerified = dagefenUser.needConfirmation == null;
+        return user;
+    }
+
     public SocialUser find(String email) {
+        User user = User.find("byEmail", email).first();
+        if (user != null) {
+            return convert2SocialUser(user);
+        }
+
         for (SocialUser su : users.values()) {
             if (su.id.provider.equals(ProviderType.userpass)) {
                 User dagefenUser = User.find("byName", su.id.id).first();
@@ -58,15 +70,27 @@ public class CustomUserService implements UserService.Service {
 
     public void save(SocialUser user) {
         users.put(user.id.id + user.id.provider.toString(), user);
+
+        User dagefenUser = User.find("name", user.id.id).first();
+        if (dagefenUser == null) {
+            dagefenUser = new User(user.id.id, user.password, user.email);
+        } else {
+            dagefenUser.name = user.id.id;
+            dagefenUser.passWord = user.password;
+            dagefenUser.email = user.email;
+            dagefenUser.save();
+        }
     }
 
     public String createActivation(SocialUser user) {
         final String uuid = Codec.UUID();
         activations.put(uuid, user);
 
-        User dagefenUser = new User(user.id.id, user.password, user.email);
-        dagefenUser.needConfirmation = uuid;
-        dagefenUser.save();
+        User dagefenUser = User.find("name", user.id.id).first();
+        if (dagefenUser != null) {
+            dagefenUser.needConfirmation = uuid;
+            dagefenUser.save();
+        }
 
         return uuid;
     }
@@ -98,17 +122,16 @@ public class CustomUserService implements UserService.Service {
         User dagefenUser = User.find("name", user.id.id).first();
         if (dagefenUser != null) {
             dagefenUser.passwordReset = uuid;
+            dagefenUser.save();
         }
         return uuid;
     }
 
     @Override
     public SocialUser fetchForPasswordReset(String username, String uuid) {
-        User dagefenUser = User.find("passwordReset", uuid).first();
+        User dagefenUser = User.find("byPasswordReset", uuid).first();
         if (dagefenUser != null) {
-            SocialUser socialUser = new SocialUser();
-            socialUser.id.id = dagefenUser.name;
-            return socialUser;
+            return convert2SocialUser(dagefenUser);
         }
 
         return null;
@@ -118,7 +141,7 @@ public class CustomUserService implements UserService.Service {
     public void disableResetCode(String username, String uuid) {
         SocialUser socialUser = fetchForPasswordReset(username, uuid);
 
-        User dagefenUser = User.find("passwordReset", uuid).first();
+        User dagefenUser = User.find("byPasswordReset", uuid).first();
         if (dagefenUser != null && dagefenUser.name.equals(socialUser.id.id)) {
             dagefenUser.passwordReset = null;
         }

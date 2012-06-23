@@ -7,7 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * 用户
@@ -19,7 +21,7 @@ import java.util.Set;
 public class User extends Model {
     // 用户名
     public String name;
-    // 显示名称
+    // 昵称
     public String displayName;
     // 密码
     public String passWord;
@@ -32,15 +34,15 @@ public class User extends Model {
     public String passwordReset;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    public Set<SocialId> socialIds;
+    public Set<SocialId> socialIds = new HashSet<SocialId>();
 
     // 角色列表
     @ManyToMany(cascade = CascadeType.PERSIST)
-    public Set<Role> roles;
+    public Set<Role> roles = new HashSet<Role>();
 
     // 用户组列表
     @ManyToMany(cascade = CascadeType.PERSIST)
-    public Set<UserGroup> userGroups;
+    public Set<UserGroup> userGroups = new HashSet<UserGroup>();
 
     public User(String name, String passWord, String email) {
         this.name = name;

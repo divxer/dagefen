@@ -71,14 +71,16 @@ public class CustomUserService implements UserService.Service {
     public void save(SocialUser user) {
         users.put(user.id.id + user.id.provider.toString(), user);
 
-        User dagefenUser = User.find("name", user.id.id).first();
-        if (dagefenUser == null) {
-            dagefenUser = new User(user.id.id, user.password, user.email);
-        } else {
-            dagefenUser.name = user.id.id;
-            dagefenUser.passWord = user.password;
-            dagefenUser.email = user.email;
-            dagefenUser.save();
+        if (user.id.provider.equals(ProviderType.userpass)) {
+            User dagefenUser = User.find("name", user.id.id).first();
+            if (dagefenUser == null) {
+                dagefenUser = new User(user.id.id, user.password, user.email);
+            } else {
+                dagefenUser.name = user.id.id;
+                dagefenUser.passWord = user.password;
+                dagefenUser.email = user.email;
+                dagefenUser.save();
+            }
         }
     }
 

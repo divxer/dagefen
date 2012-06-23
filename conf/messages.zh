@@ -31,14 +31,14 @@ securesocial.authError=There was an error while trying to log you in.  Please tr
 securesocial.signUpTitle=注册
 securesocial.signUpLabel=Complete the following form:
 securesocial.userName=用户名
-securesocial.name=Full Name
+securesocial.name=昵称
 securesocial.password2=确认密码
 securesocial.cancel=取消
 securesocial.passwordsMustMatch=The passwords do not match
 securesocial.userNameTaken=用户名已经被使用
 securesocial.activationTitle=欢迎 %s
 securesocial.activationSuccess=Thank you, your account has been activated. Click <a href="%s">here</a> to log in.
-securesocial.activateTitle=账号激活
+securesocial.activateTitle=帐号激活
 securesocial.errorCreatingAccount=There was an error creating your account. Please try again.
 securesocial.accountNotActive=Your account is not active. If you think this is an error please contact the administrator.
 securesocial.accountCreated=Your account has been created.  You should receive an activation email shortly.

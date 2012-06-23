@@ -1,0 +1,86 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<div class="span12 columns">
+    <div class="page-header">
+        <h2><img src="${user.avatarUrl}" width="40px" height="40px"/> 欢迎你！ ${user.displayName}</h2>
+    </div>
+
+    <div class="clearfix row">
+        <div class="span6">
+            <h2>完善下你的信息，以后你也可以使用该用户名和密码来登录打个分</h2>
+            #{form action:@SocialConnect.connect(), autocomplete:'off'}
+                <fieldset>
+                    <div class="clearfix #{ifError 'userName'} error #{/ifError}">
+                        <label for="displayName">&{'securesocial.userName'}</label>
+                        <div class="input">
+                            <input id="displayName" class="large" name="userName" value="${flash.userName}"/>
+                            #{ifError 'userName'}
+                                <span class="help-inline">#{error 'userName'/}</span>
+                            #{/ifError}
+                        </div>
+                    </div>
+
+                    <div class="clearfix #{ifError 'userName'} error #{/ifError}">
+                        <label for="email">&{'securesocial.email'}</label>
+                        <div class="input">
+                            <input id="email" class="large" name="email" value="${flash.email}"/>
+                            #{ifError 'email'}
+                                <span class="help-inline">#{error 'email'/}</span>
+                            #{/ifError}
+                        </div>
+                    </div>
+
+                    <div class="clearfix #{ifError 'password'} error #{/ifError}">
+                        <label for="password">&{'securesocial.password'}</label>
+                        <div class="input">
+                            <input id="password" class="large" name="password" type="password"/>
+                            #{ifError 'password'}
+                                <span class="help-inline">&{'securesocial.required'}</span>
+                            #{/ifError}
+                        </div>
+                    </div>
+                    <input type="hidden" name="socialUserId" value="${socialId.userId}"/>
+
+                    <div class="actions">
+                        <input type="submit" value="提交" class="btn primary">
+                    </div>
+                </fieldset>
+            #{/form}
+        </div>
+        <div class="span6">
+            <h2>已有打个分帐号，用已有帐号绑定</h2>
+            #{form @securesocial.SecureSocial.authenticate(securesocial.provider.ProviderType.userpass), autocomplete:'off'}
+                <fieldset>
+                    <div class="clearfix #{ifError 'userName'} error #{/ifError}">
+                        <label for="displayName">&{'securesocial.userName'}</label>
+                        <div class="input">
+                            <input id="displayName" class="large" name="userName" value="${flash.userName}"/>
+                            #{ifError 'userName'}
+                                <span class="help-inline">#{error 'userName'/}</span>
+                            #{/ifError}
+                        </div>
+                    </div>
+
+                    <div class="clearfix #{ifError 'password'} error #{/ifError}">
+                        <label for="password">&{'securesocial.password'}</label>
+                        <div class="input">
+                            <input id="password" class="large" name="password" type="password"/>
+                            #{ifError 'password'}
+                                <span class="help-inline">&{'securesocial.required'}</span>
+                            #{/ifError}
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <input type="submit" value="提交" class="btn primary">
+                    </div>
+                </fieldset>
+            #{/form}
+        </div>
+    </div>
+
+</div>
+        
+
+

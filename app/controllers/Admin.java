@@ -6,6 +6,7 @@ import models.User;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
+import securesocial.provider.ProviderType;
 import securesocial.provider.SocialUser;
 
 /**
@@ -15,19 +16,28 @@ import securesocial.provider.SocialUser;
  */
 @With(SecureSocial.class)
 public class Admin extends Controller {
+    private static final String GET = "GET";
+    private static final String ROOT = "/";
+    private static final String ORIGINAL_URL = "originalUrl";
+
     @Before
     static void setConnectedUser() {
         SocialUser user = SecureSocial.getCurrentUser();
         if (user != null) {
-            SocialId socialId = SocialId.find("byUserIdAndProvider",
-                    user.id.id, user.id.provider.toString()).first();
-            if (socialId == null) {
-                socialId = new SocialId();
-                socialId.userId = user.id.id;
-                socialId.provider = user.id.provider.toString();
-                renderTemplate("SocialConnect/connect.html", user);
-            } else if (socialId.user == null) {
-                renderTemplate("SocialConnect/connect.html", user, socialId);
+            if (!user.id.provider.equals(ProviderType.userpass)) {
+                final String originalUrl = request.method.equals(GET) ? request.url : ROOT;
+                flash.put(ORIGINAL_URL, originalUrl);
+
+                SocialId socialId = SocialId.find("byUserIdAndProvider",
+                        user.id.id, user.id.provider.toString()).first();
+                if (socialId == null) {
+                    socialId = new SocialId();
+                    socialId.userId = user.id.id;
+                    socialId.provider = user.id.provider.toString();
+                    renderTemplate("SocialConnect/connect.html", user);
+                } else if (socialId.user == null) {
+                    renderTemplate("SocialConnect/connect.html", user, socialId);
+                }
             }
             renderArgs.put("user", user);
         }

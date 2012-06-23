@@ -3,11 +3,15 @@ package controllers;
 import controllers.securesocial.SecureSocial;
 import models.SocialId;
 import models.User;
+import play.Logger;
 import play.data.validation.Email;
 import play.data.validation.Required;
+import play.i18n.Messages;
+import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.With;
-import securesocial.provider.SocialUser;
+import securesocial.provider.*;
+import securesocial.utils.SecureSocialPasswordHasher;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -26,16 +30,7 @@ public class SocialConnect extends Controller {
     public static void connect(@Required String userName,
                                @Required String password,
                                @Required @Email(message = "securesocial.invalidEmail") String email) {
-        final String originalUrl = request.method.equals(GET) ? request.url : ROOT;
-        flash.put(ORIGINAL_URL, originalUrl);
-
-        Map<String, String> map = Controller.params.allSimple();
-
-        for (String s : map.keySet()) {
-            String value = map.get(s);
-
-            System.out.println(s + " " + value);
-        }
+        String originalUrl = flash.get(ORIGINAL_URL);
 
         SocialUser socialUser = SecureSocial.getCurrentUser();
 
@@ -47,6 +42,7 @@ public class SocialConnect extends Controller {
             socialId.provider = socialUser.id.provider.toString();
             socialId.email = socialUser.email;
         } else if (socialId.user == null) {
+            flash.keep(ORIGINAL_URL);
             SecureSocial.login();
         }
 
@@ -55,7 +51,7 @@ public class SocialConnect extends Controller {
         user.socialIds.add(socialId);
         user.save();
 
-        redirect(ORIGINAL_URL);
+        redirect(originalUrl);
     }
 
     // 创建新用户
@@ -64,7 +60,38 @@ public class SocialConnect extends Controller {
     }
 
     // 关联已存在的用户
-    public static void associateUser() {
-        render();
+    public static void associateUser(@Required String userName,
+                                     @Required String password, String originalUrl) {
+        Map<String, String> map = Controller.params.allSimple();
+
+        for (String s : map.keySet()) {
+            String value = map.get(s);
+
+            System.out.println(s + " " + value);
+        }
+
+        SocialUser socialUser = SecureSocial.getCurrentUser();
+        SocialId socialId = SocialId.find("byUserIdAndProvider",
+                socialUser.id.id, socialUser.id.provider.toString()).first();
+        if (socialId == null) {
+            socialId = new SocialId();
+            socialId.provider = socialUser.id.provider.toString();
+            socialId.userId = socialUser.id.id;
+            socialId.email = socialUser.email;
+        }
+
+        User user = User.find("byName", userName).first();
+        if (user == null || !Crypto.passwordHash(password, Crypto.HashType.MD5).equals(user.passWord)) {
+            flash.keep(ORIGINAL_URL);
+            renderArgs.put("user", socialUser);
+            renderTemplate("SocialConnect/connect.html");
+        } else {
+            socialId.user = user;
+            socialId.save();
+            user.socialIds.add(socialId);
+            user.save();
+
+            redirect(originalUrl==null ? ROOT : originalUrl);
+        }
     }
 }

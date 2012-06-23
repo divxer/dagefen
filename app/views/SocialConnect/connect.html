@@ -40,7 +40,6 @@
                             #{/ifError}
                         </div>
                     </div>
-                    <input type="hidden" name="socialUserId" value="${socialId.userId}"/>
 
                     <div class="actions">
                         <input type="submit" value="提交" class="btn primary">
@@ -50,7 +49,7 @@
         </div>
         <div class="span6">
             <h2>已有打个分帐号，用已有帐号绑定</h2>
-            #{form @securesocial.SecureSocial.authenticate(securesocial.provider.ProviderType.userpass), autocomplete:'off'}
+            #{form action:@SocialConnect.associateUser(), autocomplete:'off'}
                 <fieldset>
                     <div class="clearfix #{ifError 'userName'} error #{/ifError}">
                         <label for="displayName">&{'securesocial.userName'}</label>
@@ -71,6 +70,7 @@
                             #{/ifError}
                         </div>
                     </div>
+                    <input type="hidden" name="originalUrl" value="${flash.originalUrl}"/>
 
                     <div class="actions">
                         <input type="submit" value="提交" class="btn primary">

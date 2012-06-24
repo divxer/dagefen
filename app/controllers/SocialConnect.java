@@ -27,6 +27,7 @@ public class SocialConnect extends Controller {
     private static final String GET = "GET";
     private static final String ROOT = "/";
 
+    // 创建新用户
     public static void connect(@Required String userName,
                                @Required String password,
                                @Required @Email(message = "securesocial.invalidEmail") String email) {
@@ -52,11 +53,6 @@ public class SocialConnect extends Controller {
         user.save();
 
         redirect(originalUrl);
-    }
-
-    // 创建新用户
-    public static void createUser() {
-        render();
     }
 
     // 关联已存在的用户

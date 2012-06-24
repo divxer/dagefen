@@ -62,14 +62,6 @@ public class SocialConnect extends Controller {
     // 关联已存在的用户
     public static void associateUser(@Required String userName,
                                      @Required String password, String originalUrl) {
-        Map<String, String> map = Controller.params.allSimple();
-
-        for (String s : map.keySet()) {
-            String value = map.get(s);
-
-            System.out.println(s + " " + value);
-        }
-
         SocialUser socialUser = SecureSocial.getCurrentUser();
         SocialId socialId = SocialId.find("byUserIdAndProvider",
                 socialUser.id.id, socialUser.id.provider.toString()).first();

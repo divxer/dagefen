@@ -1,7 +1,9 @@
 package auth;
 
+import models.Role;
 import models.User;
 import play.libs.Codec;
+import play.libs.Crypto;
 import securesocial.provider.*;
 
 import java.util.Collections;
@@ -74,7 +76,10 @@ public class CustomUserService implements UserService.Service {
         if (user.id.provider.equals(ProviderType.userpass)) {
             User dagefenUser = User.find("name", user.id.id).first();
             if (dagefenUser == null) {
-                dagefenUser = new User(user.id.id, user.password, user.email);
+                Role role = Role.findOrCreateByName("standard-user");
+                dagefenUser = new User(user.id.id,
+                        Crypto.passwordHash(user.password, Crypto.HashType.MD5), user.email);
+                dagefenUser.roles.add(role);
             } else {
                 dagefenUser.name = user.id.id;
                 dagefenUser.passWord = user.password;

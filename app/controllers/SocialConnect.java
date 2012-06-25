@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.securesocial.SecureSocial;
+import models.Role;
 import models.SocialId;
 import models.User;
 import play.Logger;
@@ -47,9 +48,12 @@ public class SocialConnect extends Controller {
             SecureSocial.login();
         }
 
-        User user = new User(userName, password, email);
+        Role role = Role.findOrCreateByName("standard-user");
+
+        User user = new User(userName, Crypto.passwordHash(password, Crypto.HashType.MD5), email);
         socialId.user = user;
         user.socialIds.add(socialId);
+        user.roles.add(role);
         user.save();
 
         redirect(originalUrl);

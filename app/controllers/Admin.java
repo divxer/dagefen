@@ -1,5 +1,8 @@
 package controllers;
 
+import controllers.deadbolt.Deadbolt;
+import controllers.deadbolt.Restrict;
+import controllers.deadbolt.Restrictions;
 import controllers.securesocial.SecureSocial;
 import models.SocialId;
 import models.User;
@@ -14,7 +17,8 @@ import securesocial.provider.SocialUser;
  * Date: 12-6-15
  * Time: 下午11:19
  */
-@With(SecureSocial.class)
+//@With(SecureSocial.class)
+@With(Deadbolt.class)
 public class Admin extends Controller {
     private static final String GET = "GET";
     private static final String ROOT = "/";
@@ -43,6 +47,7 @@ public class Admin extends Controller {
         }
     }
 
+    @Restrictions({@Restrict("superadmin"), @Restrict("standard-user")})
     public static void index() {
         render();
     }

@@ -5,3 +5,4 @@ require:
     - play -> crud
     - play -> secure
     - play -> securesocial 0.2.4
+    - play -> deadbolt 1.5.4

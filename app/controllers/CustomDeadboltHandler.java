@@ -48,8 +48,6 @@ public class CustomDeadboltHandler extends Controller implements DeadboltHandler
             }
         }
 
-        System.out.println("roles=" + roles);
-
         // we're done
         return new AuthRoleHolder(roles);
     }

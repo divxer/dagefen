@@ -21,7 +21,6 @@ public class AuthRoleHolder implements RoleHolder {
 
     @Override
     public List<? extends Role> getRoles() {
-        System.out.println(roles);
         return roles;
     }
 }

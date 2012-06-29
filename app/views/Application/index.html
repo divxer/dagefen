@@ -161,9 +161,11 @@
                         navSelector  : '#page-nav',    // selector for the paged navigation
                         nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
                         itemSelector : '.box',     // selector for all items you'll retrieve
+                        animate: true,
                         loading: {
-                            finishedMsg: '没有了...',
-                            img: 'http://i.imgur.com/6RMhx.gif'
+                            finishedMsg: '<em>没有了...</em>',
+                            img: 'http://i.imgur.com/6RMhx.gif',
+                            msgText: "<em>正在加载...</em>"
                         }
                     },
                     // trigger Masonry as a callback
@@ -235,5 +237,5 @@
 </div>
 
 <nav id="page-nav">
-    <a href="@{Application.index(2)}"></a>
+    <a href="@{Application.index(2, flash.searchText)}"></a>
 </nav>

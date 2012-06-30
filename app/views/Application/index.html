@@ -37,6 +37,22 @@
             border-radius: 10px;
         }
 
+        .topcont {
+            cursor: pointer;
+            background: url("@{'/public/images/container_bg.png'}") repeat scroll 0 0 #F9F9FA;
+            border-radius: 5px 5px 0 0;
+            -webkit-border-radius: 5px 5px 0 0;
+            -moz-border-radius: 5px 5px 0 0;
+            border: 2px solid #FFF;
+            color: #333;
+            text-shadow: 0 1px 0 #FFF;
+            font-weight: 700;
+            font-size: 14px;
+            text-align: left;
+            margin: -2px 0;
+            padding: 8px 12px
+        }
+
         .box img,
         #tumblelog img {
             display: block;
@@ -201,6 +217,21 @@
                     $nav.removeClass('subnav-fixed')
                 }
             }
+
+            (function() {
+                var $backToTopEle = $('#topcontrol').click(function() {
+                    $("html, body").animate({ scrollTop: 0 }, 120);
+                }), $backToTopFun = function() {
+                    var st = $(document).scrollTop(), winh = $(window).height();
+                    (st > 0)? $backToTopEle.show(): $backToTopEle.hide();
+                    //IE6下的定位
+                    if (!window.XMLHttpRequest) {
+                        $backToTopEle.css("top", st + winh - 166);
+                    }
+                };
+                $(window).bind("scroll", $backToTopFun);
+                $(function() { $backToTopFun(); });
+            })();
         });
     </script>
 #{/set}
@@ -239,3 +270,7 @@
 <nav id="page-nav">
     <a href="@{Application.index(2, flash.searchText)}"></a>
 </nav>
+
+<div id="topcontrol" style="position: fixed; bottom: 0px; right: 0px; opacity: 1; cursor: pointer; " title="返回顶部">
+    <div class="topcont">返回顶部<span class="arrowon"></span></div>
+</div>

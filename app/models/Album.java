@@ -3,10 +3,7 @@ package models;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,11 +28,17 @@ public class Album extends Model {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     public List<Picture> pictures = new ArrayList<Picture>();
 
-    public Album(String title, String description, String type, User author) {
+    public Album(String title, String description, String type, String source, User author) {
         this.title = title;
         this.description = description;
         this.type = type;
+        this.source = source;
         this.updateTime = new Date();
         this.author = author;
+    }
+
+    @PostPersist
+    public void postPersist() {
+        this.updateTime = new Date();
     }
 }

@@ -173,6 +173,13 @@
                 });
             });
 
+            $('.box').hover(function(){
+                $(this).find('.heart_button').fadeIn();
+
+            }, function(){
+                $(this).find('.heart_button').fadeOut();
+            });
+
             $container.infinitescroll({
                         navSelector  : '#page-nav',    // selector for the paged navigation
                         nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
@@ -186,6 +193,12 @@
                     },
                     // trigger Masonry as a callback
                     function( newElements ) {
+                        // hover button
+                        $( newElements ).hover(function(){
+                            $(this).find('.heart_button').fadeIn();
+                        }, function(){
+                            $(this).find('.heart_button').fadeOut();
+                        });
                         // hide new items while they are loading
                         var $newElems = $( newElements ).css({ opacity: 0 });
                         // ensure that images load before adding to masonry layout
@@ -232,6 +245,21 @@
                 $(window).bind("scroll", $backToTopFun);
                 $(function() { $backToTopFun(); });
             })();
+
+            <div id="#holder">
+                    <img class="adminGalImg" src="image source" />
+                    <button class="galImgButton">Button</button>
+                    </div>
+
+
+            $("#holder").hover(function()
+                    {
+                        $(this).parent().find(".galImgBtn").css("visibility","visible");
+                    },
+                    function()
+                    {
+                        $(this).parent().find(".galImgBtn").css("visibility","hidden");
+                    });
         });
     </script>
 #{/set}
@@ -263,6 +291,7 @@
             <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
                 <img src="${_album.thumbnail}" alt="${_album.title}">
             </a>
+            <div class="heart_button"><p>&hearts;</p></div>
         </div>
     #{/list}
 </div>

@@ -21,6 +21,8 @@ public class Album extends Model {
     public String source;
     public String thumbnail;
     public Date updateTime;
+    public String dagefenUrl;
+
     @Required
     @ManyToOne
     public User author;

@@ -129,7 +129,7 @@ public class MmonlyCrawler extends Job {
 
             Album album;
             if (Album.find("bySource", articleUrl).fetch().size() == 0) {
-                album = new Album(title, description, articleUrl, "", null);
+                album = new Album(title, description, "", articleUrl, null);
             } else {
                 album = Album.find("bySource", articleUrl).first();
             }
@@ -169,6 +169,9 @@ public class MmonlyCrawler extends Job {
             // 开始下载图片
 //            downloadImage(album, sourceUrl, articleTitle, articleDescription);
             String dagefenUrl = fetch2Dagefen(sourceUrl);
+            if (dagefenUrl != null && album.dagefenUrl == null) {
+                album.dagefenUrl = dagefenUrl;
+            }
             // 把图片上传至imgur
 //            String imgUrl = ImgurUtils.uploadImgs2Imgur(sourceUrl);
             String imgUrl = null;

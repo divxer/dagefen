@@ -19,7 +19,7 @@
         #{list items:album.pictures, as:'_picture'}
             <li class="touchcarousel-item">
                 <a href="@{Pictures.show(_picture.id)}" title="拖动浏览，点击查看大图" target="_blank">
-                    <img src="${_picture.fileName}" alt="${_picture.title}" height="400" >
+                    <img src="${_picture.dagefenUrl}" alt="${_picture.title}" height="400" >
                 </a>
             </li>
         #{/list}

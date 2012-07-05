@@ -59,6 +59,59 @@
             width: 100%;
         }
 
+        /* showpic */
+        .box .actions{display:none;}
+        .box:hover .actions{display:block;}
+        .box:hover img{filter:alpha(opacity=70);-moz-opacity:0.7;-khtml-opacity:0.7;opacity:0.7;}
+        .box p{line-height:22px;margin:10px 0 0 0;padding:5px 10px;border-top:solid 1px #F5F2F2;background:#FAFAFA;}
+        .box .actions{position:absolute;top:5px;left:0;z-index:3;width:100%;}
+        .box .actions .lefter{float:left;margin:0 0 0 5px;display:inline;}
+        .box .actions .righter{float:right;}
+        .box .actions .righter a{margin:0 5px 0 0;}
+        /* button */
+        .button{
+            display:inline-block;
+            text-decoration:none;
+            font:bold 12px/12px HelveticaNeue, Arial;
+            padding:8px 11px;
+            color:#555;
+            border:1px solid #dedede;
+            -webkit-border-radius:3px;
+            -moz-border-radius:3px;
+            border-radius:3px;
+            cursor:pointer;
+        }
+        .button.white{
+            background:#f5f5f5;
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f0f0f0'); /*  IE */
+            background:-webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f0f0f0)); /*  WebKit */
+            background:-moz-linear-gradient(top,  #f9f9f9, #f0f0f0);
+            border-color:#dedede #d8d8d8 #d3d3d3;
+            color:#555;
+            text-shadow:0 1px 0 #fff;
+            -webkit-box-shadow:0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+            -moz-box-shadow:0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+            box-shadow:0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+        }
+        .button.white:hover{
+            border-color:#c7c7c7 #c3c3c3 #bebebe;
+            text-shadow:0 1px 0 #fdfdfd;
+            -webkit-box-shadow:0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
+            -moz-box-shadow:0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
+            box-shadow:0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
+        }
+        .button.white:active{
+            background:#f4f4f4;
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#f8f8f8'); /*  IE */
+            background:-webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#f8f8f8)); /*  WebKit */
+            background:-moz-linear-gradient(top,  #eeeeee, #f8f8f8);
+            border-color:#c7c7c7 #c3c3c3 #bebebe;
+            text-shadow:0 1px 0 #fdfdfd;
+            -webkit-box-shadow:0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
+            -moz-box-shadow:0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
+            box-shadow:0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
+        }
+
         /* Subnav */
         .subnav {
             width: 100%;
@@ -173,12 +226,13 @@
                 });
             });
 
-            $('.box').hover(function(){
-                $(this).find('.heart_button').fadeIn();
-
-            }, function(){
-                $(this).find('.heart_button').fadeOut();
-            });
+//            $(this).find('.heart_button').fadeOut();
+//            $('.box').hover(function(){
+//                $(this).find('.heart_button').fadeIn();
+//
+//            }, function(){
+//                $(this).find('.heart_button').fadeOut();
+//            });
 
             $container.infinitescroll({
                         navSelector  : '#page-nav',    // selector for the paged navigation
@@ -245,21 +299,6 @@
                 $(window).bind("scroll", $backToTopFun);
                 $(function() { $backToTopFun(); });
             })();
-
-            <div id="#holder">
-                    <img class="adminGalImg" src="image source" />
-                    <button class="galImgButton">Button</button>
-                    </div>
-
-
-            $("#holder").hover(function()
-                    {
-                        $(this).parent().find(".galImgBtn").css("visibility","visible");
-                    },
-                    function()
-                    {
-                        $(this).parent().find(".galImgBtn").css("visibility","hidden");
-                    });
         });
     </script>
 #{/set}
@@ -289,9 +328,13 @@
     #{list items:albumList, as:'_album'}
         <div class="box thumbnail span3 masonry-brick">
             <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
-                <img src="${_album.thumbnail}" alt="${_album.title}">
+                <img src="${_album.dagefenUrl}" alt="${_album.title}">
             </a>
-            <div class="heart_button"><p>&hearts;</p></div>
+            <div class="actions">
+                <div class="lefter"><a href="#" class="button white">评论</a></div>
+                <div class="righter"><a href="#" class="button white">喜欢</a><a href="#" class="button white">分享</a></div>
+            </div>
+            <p>${_album.title}</p>
         </div>
     #{/list}
 </div>

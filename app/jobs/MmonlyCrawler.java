@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  * Time: 上午12:17
  */
 //@Every("6hr")
-@OnApplicationStart
+@OnApplicationStart(async=true)
 public class MmonlyCrawler extends Job {
     public static final String domainName = "http://www.mmonly.com";
 
@@ -305,8 +305,8 @@ public class MmonlyCrawler extends Job {
 
         // 保存专辑缩略图地址
         if (album.thumbnail == null) {
-            album.thumbnail = imgUrl;
-            album.save();
+            savedAlbum.thumbnail = imgUrl;
+            savedAlbum.save();
         }
 
         // 事务提交，并开启新事务

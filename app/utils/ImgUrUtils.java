@@ -47,37 +47,41 @@ public class ImgurUtils {
         request.addQuerystringParameter("image", imgUrl);
         request.addQuerystringParameter("type", "url");
         service.signRequest(accessToken, request);
-        Response response = request.send();
+        try{
+            Response response = request.send();
 
-        String originalLink = null;
-        if (response.getCode() == 200) {
-            try{
-                com.google.gson.JsonParser jsonParser = new com.google.gson.JsonParser();
-                JsonElement json = jsonParser.parse(response.getBody());
-                JsonObject jsonObject = json.getAsJsonObject();
+            String originalLink = null;
+            if (response.getCode() == 200) {
+                try{
+                    com.google.gson.JsonParser jsonParser = new com.google.gson.JsonParser();
+                    JsonElement json = jsonParser.parse(response.getBody());
+                    JsonObject jsonObject = json.getAsJsonObject();
 
-                if (jsonObject != null) {
-                    if (jsonObject.get("images") != null) {
-                        originalLink = jsonObject.get("images")
-                                .getAsJsonObject().get("links").getAsJsonObject().get("original").getAsString();
-                    } else if (jsonObject.get("error") != null) {
-                        String errorMessage = jsonObject.get("error").getAsJsonObject().get("message").getAsString();
-                        Logger.error("error in upload image to imgur. " + errorMessage);
+                    if (jsonObject != null) {
+                        if (jsonObject.get("images") != null) {
+                            originalLink = jsonObject.get("images")
+                                    .getAsJsonObject().get("links").getAsJsonObject().get("original").getAsString();
+                        } else if (jsonObject.get("error") != null) {
+                            String errorMessage = jsonObject.get("error").getAsJsonObject().get("message").getAsString();
+                            Logger.error("error in upload image to imgur. " + errorMessage);
+                        } else {
+                            Logger.error("error in upload image to imgur.");
+                            return null;
+                        }
                     } else {
-                        Logger.error("error in upload image to imgur.");
                         return null;
                     }
-                } else {
+                } catch (Exception ex) {
+                    Logger.error(ex, "error in upload image to imgur.");
                     return null;
                 }
-            } catch (Exception ex) {
-                Logger.error(ex, "error in upload image to imgur.");
-                return null;
+            } else {
+                Logger.error("upload img status: " + response.getCode());
             }
-        } else {
-            Logger.error("upload img status: " + response.getCode());
+            return originalLink;
+        } catch (Exception ex) {
+            Logger.error(ex, "error in upload image to imgur. signRequest...");
+            return null;
         }
-
-        return originalLink;
     }
 }

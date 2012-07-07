@@ -2,6 +2,7 @@ package jobs;
 
 import models.Album;
 import models.Picture;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -22,8 +23,6 @@ import play.libs.Codec;
 import play.mvc.Router;
 import play.vfs.VirtualFile;
 import utils.BaseX;
-import utils.ImgurUtils;
-import utils.UpYun;
 import utils.UpYunUtils;
 
 import java.io.File;
@@ -39,22 +38,21 @@ import java.util.regex.Pattern;
  * Date: 12-6-4
  * Time: 上午12:17
  */
-@Every("6h")
-//@OnApplicationStart(async=true)
-public class MmonlyCrawler extends Job {
-    public static final String domainName = "http://www.mmonly.com";
+//@Every("6h")
+@OnApplicationStart(async=true)
+public class Picture4493Crawler extends Job {
+    public static final String domainName = "http://www.4493.com";
 
     public void doJob() {
         try {
             Document doc = Jsoup.connect(domainName).timeout(10000).get();
 
             // 获取文章列表
-            Elements listPage = doc.select("html body div.wrap div.nav ul li a");
+            Elements listPage = doc.select("html body div.allbox div.nav_menu ul li a");
 
             for (Element element : listPage) {
-                if (!element.attr("abs:href").contains("http://www.mmonly.com/meinvtaotu")
-                        && !element.attr("abs:href").contentEquals("http://www.mmonly.com")
-                        && !element.attr("abs:href").contentEquals("http://www.mmonly.com/")) {
+                if (!element.attr("abs:href").contentEquals("http://www.4493.com")
+                        && !element.attr("abs:href").contentEquals("http://www.4493.com/")) {
                     Logger.info("URL " + element.attr("abs:href") + " will be fetched now!");
 
                     processChannel(element.attr("abs:href"));
@@ -70,25 +68,14 @@ public class MmonlyCrawler extends Job {
             Document doc = Jsoup.connect(channelUrl).timeout(10000).get();
 
             // 获取文章列表
-            Element listPage = doc.select("html body div.wrap div.page ul li a").last();
+            Elements listPage = doc.select("html body div.allbox div.category_list div.page div.page1 a");
 
-            // 提取总页数
-            Integer totalPages = null;
-            String prefix = "";
-            String suffix = "";
-            String pagePatternStrs = "(.+?list_)(\\d+)(.html)";
-            Pattern pagePattern = Pattern.compile(pagePatternStrs, Pattern.DOTALL);
-            Matcher pageMatcher = pagePattern.matcher(listPage.attr("abs:href"));
-            while (pageMatcher.find()) {
-                String pageString = pageMatcher.group(2);
-                prefix = pageMatcher.group(1);
-                suffix = pageMatcher.group(3);
-                totalPages = Integer.parseInt(pageString);
-            }
-            if (totalPages != null) {
-                for (int i = 1; i <= totalPages; i++) {
-                    String pageUrl = prefix + i + suffix;
-
+            for (Element element : listPage) {
+                String pageUrl = element.attr("abs:href");
+                if (pageUrl == null || pageUrl.length() == 0) {
+                    Logger.error("page url is null!");
+                } else {
+                    Logger.info("process page url:" + pageUrl);
                     processPage(pageUrl);
                 }
             }
@@ -100,15 +87,16 @@ public class MmonlyCrawler extends Job {
     private static void processPage(String pageUrl) {
         try {
             Document doc = Jsoup.connect(pageUrl).timeout(10000).get();
-            Elements articleList = doc.select("html body div.wrap div.w650 div.imgList ul li");
+            Elements articleList = doc.select("html body div.allbox div.category_list ul.img_120_160 li");
 
             for (Element article : articleList) {
                 Element articleLink = article.children().last();
-                String articleUrl = articleLink.attr("abs:href");
+                String articleUrl = article.children().first().attr("abs:href");
                 String articleTitle = articleLink.text();
                 // 新专辑，开始抓取
                 if (Album.find("bySource", articleUrl).fetch().size() == 0) {
-                    processArticle(articleUrl);
+                    Logger.info("fetch album: " + articleTitle + " url: " + articleUrl);
+                    processArticle(articleUrl, articleTitle);
                 }
             }
 
@@ -117,36 +105,38 @@ public class MmonlyCrawler extends Job {
         }
     }
 
-    private static void processArticle(String articleUrl) {
+    private static void processArticle(String articleUrl, String articleTitle) {
         try {
             Document doc = Jsoup.connect(articleUrl).timeout(10000).get();
 
-            Element titleElement = doc.select("html body#body div.wrap div.arcOther div.arcTitle h1 a").first();
-            String title = titleElement.text();
-
-            Element descriptionElement = doc.select("html body#body div.wrap div.arcOther div.arcDES").first();
-            String description = descriptionElement == null ? "" : descriptionElement.text();
+//            Element titleElement = doc.select("html body#body div.wrap div.arcOther div.arcTitle h1 a").first();
+//            String title = titleElement.text();
+//
+//            Element descriptionElement = doc.select("html body#body div.wrap div.arcOther div.arcDES").first();
+//            String description = descriptionElement == null ? "" : descriptionElement.text();
 
             Album album;
             if (Album.find("bySource", articleUrl).fetch().size() == 0) {
-                album = new Album(title, description, "", articleUrl, null);
+                album = new Album(articleTitle, "", "", articleUrl, null);
             } else {
                 album = Album.find("bySource", articleUrl).first();
             }
 
             // 下载图片
-            Element imgElement = doc.select("html body#body div.wrap div.arcBody p a img").first();
+//            Element imgElement = doc.select("html body#body div.wrap div.arcBody p a img").first();
 //            String firstImgUrl = imgElement.attr("abs:src");
 //            downloadImage(album, firstImgUrl, title, description);
 
-            Elements elements = doc.select("html body#body div.wrap div.page ul li");
-            elements.remove(0);
-            elements.remove(0);
-            elements.remove(0);
+            Elements elements = doc.select("html body div.allbox div.pic_content div.pic_show div.page1 a");
             elements.remove(elements.size() - 1);
             for (Element element : elements) {
-                String imgUrl = element.child(0).attr("abs:href");
-                getImages(album, imgUrl, title, description);
+                String imgUrl = element.attr("abs:href");
+                if (!StringUtils.isEmpty(imgUrl)) {
+                    Logger.info("get img url from url: " + imgUrl);
+                    getImages(album, imgUrl, articleTitle, "");
+                } else {
+                    Logger.error("picture url is empty in page url: " + articleUrl);
+                }
             }
         } catch (IOException e) {
             Logger.error(e, "error in process article.");
@@ -157,14 +147,15 @@ public class MmonlyCrawler extends Job {
         try {
             Document doc = Jsoup.connect(url).timeout(10000).get();
 
-            Element imgElement = doc.select("html body#body div.wrap div.arcBody p a img").first();
+            Element imgElement = doc.select("html body div.allbox div.pic_content div.pic_show span#txt a img").first();
             if (imgElement == null) {
-                imgElement = doc.select("html body#body div.wrap div.arcBody p img").first();
-                if (imgElement == null) {
-                    return;
-                }
+                return;
             }
             String sourceUrl = imgElement.attr("abs:src");
+            if (Picture.find("bySource", sourceUrl).fetch().size() != 0) {
+                Logger.info("picture url: " + sourceUrl + " is exist!");
+                return;
+            }
 
             // 开始下载图片
 //            downloadImage(album, sourceUrl, articleTitle, articleDescription);

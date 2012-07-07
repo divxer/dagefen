@@ -38,8 +38,8 @@ import java.util.regex.Pattern;
  * Date: 12-6-4
  * Time: 上午12:17
  */
-//@Every("6h")
-@OnApplicationStart(async=true)
+@Every("7h")
+//@OnApplicationStart(async=true)
 public class Picture4493Crawler extends Job {
     public static final String domainName = "http://www.4493.com";
 
@@ -109,23 +109,12 @@ public class Picture4493Crawler extends Job {
         try {
             Document doc = Jsoup.connect(articleUrl).timeout(10000).get();
 
-//            Element titleElement = doc.select("html body#body div.wrap div.arcOther div.arcTitle h1 a").first();
-//            String title = titleElement.text();
-//
-//            Element descriptionElement = doc.select("html body#body div.wrap div.arcOther div.arcDES").first();
-//            String description = descriptionElement == null ? "" : descriptionElement.text();
-
             Album album;
             if (Album.find("bySource", articleUrl).fetch().size() == 0) {
                 album = new Album(articleTitle, "", "", articleUrl, null);
             } else {
                 album = Album.find("bySource", articleUrl).first();
             }
-
-            // 下载图片
-//            Element imgElement = doc.select("html body#body div.wrap div.arcBody p a img").first();
-//            String firstImgUrl = imgElement.attr("abs:src");
-//            downloadImage(album, firstImgUrl, title, description);
 
             Elements elements = doc.select("html body div.allbox div.pic_content div.pic_show div.page1 a");
             elements.remove(elements.size() - 1);
@@ -157,8 +146,6 @@ public class Picture4493Crawler extends Job {
                 return;
             }
 
-            // 开始下载图片
-//            downloadImage(album, sourceUrl, articleTitle, articleDescription);
             String dagefenUrl = fetch2Dagefen(sourceUrl);
             if (dagefenUrl != null && album.dagefenUrl == null) {
                 album.dagefenUrl = dagefenUrl;

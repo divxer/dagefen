@@ -4,18 +4,12 @@ import controllers.securesocial.SecureSocial;
 import models.Role;
 import models.SocialId;
 import models.User;
-import play.Logger;
 import play.data.validation.Email;
 import play.data.validation.Required;
-import play.i18n.Messages;
 import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.With;
-import securesocial.provider.*;
-import securesocial.utils.SecureSocialPasswordHasher;
-
-import java.util.Iterator;
-import java.util.Map;
+import securesocial.provider.SocialUser;
 
 /**
  * User: divxer

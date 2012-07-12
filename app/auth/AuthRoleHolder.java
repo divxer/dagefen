@@ -2,7 +2,6 @@ package auth;
 
 import models.deadbolt.Role;
 import models.deadbolt.RoleHolder;
-import org.apache.commons.collections.ListUtils;
 
 import java.util.List;
 

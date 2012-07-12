@@ -5,7 +5,6 @@ import controllers.deadbolt.Restrict;
 import controllers.deadbolt.Restrictions;
 import controllers.securesocial.SecureSocial;
 import models.SocialId;
-import models.User;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;

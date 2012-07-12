@@ -18,7 +18,6 @@ import play.Logger;
 import play.db.jpa.JPA;
 import play.jobs.Every;
 import play.jobs.Job;
-import play.jobs.OnApplicationStart;
 import play.libs.Codec;
 import play.mvc.Router;
 import play.vfs.VirtualFile;
@@ -30,8 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User: divxer

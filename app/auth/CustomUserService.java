@@ -122,7 +122,6 @@ public class CustomUserService implements UserService.Service {
         return result;
     }
 
-    @Override
     public String createPasswordReset(SocialUser user) {
         final String uuid = Codec.UUID();
         resetRequests.put(uuid, user);
@@ -134,7 +133,6 @@ public class CustomUserService implements UserService.Service {
         return uuid;
     }
 
-    @Override
     public SocialUser fetchForPasswordReset(String username, String uuid) {
         User dagefenUser = User.find("byPasswordReset", uuid).first();
         if (dagefenUser != null) {
@@ -144,7 +142,6 @@ public class CustomUserService implements UserService.Service {
         return null;
     }
 
-    @Override
     public void disableResetCode(String username, String uuid) {
         SocialUser socialUser = fetchForPasswordReset(username, uuid);
 

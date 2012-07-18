@@ -226,13 +226,11 @@
                 });
             });
 
-//            $(this).find('.heart_button').fadeOut();
-//            $('.box').hover(function(){
-//                $(this).find('.heart_button').fadeIn();
-//
-//            }, function(){
-//                $(this).find('.heart_button').fadeOut();
-//            });
+            $(this).find('.comment_btn').click(function(e){
+                e.preventDefault();
+                $(this).closest(".box").find('.input-append').removeClass('hide');
+                $container.masonry();
+            });
 
             $container.infinitescroll({
                         navSelector  : '#page-nav',    // selector for the paged navigation
@@ -247,11 +245,11 @@
                     },
                     // trigger Masonry as a callback
                     function( newElements ) {
-                        // hover button
-                        $( newElements ).hover(function(){
-                            $(this).find('.heart_button').fadeIn();
-                        }, function(){
-                            $(this).find('.heart_button').fadeOut();
+//                        // hover button
+                        $( newElements ).find('.comment_btn').click(function(e){
+                            e.preventDefault();
+                            $(this).closest(".box").find('.input-append').removeClass('hide');
+                            $container.masonry();
                         });
                         // hide new items while they are loading
                         var $newElems = $( newElements ).css({ opacity: 0 });
@@ -321,10 +319,13 @@
                 <img src="${_album.dagefenUrl}" alt="${_album.title}">
             </a>
             <div class="actions">
-                <div class="lefter"><a href="#" class="button white">评论</a></div>
+                <div class="lefter"><a href="#" class="button white comment_btn">评论</a></div>
                 <div class="righter"><a href="#" class="button white">喜欢</a><a href="#" class="button white">分享</a></div>
             </div>
             <p>${_album.title}</p>
+            <div class="clearfix input-append pull-right hide">
+                <input class="span2" id="appendedInputButton" size="16" type="text"><button class="btn" type="button"><i class="icon-circle-arrow-right"></i></button>
+            </div>
         </div>
     #{/list}
 </div>

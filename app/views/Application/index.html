@@ -226,10 +226,22 @@
                 });
             });
 
+            var onMasonryComplete = function(focusObj) {
+                focusObj.focus();
+            }
+
             $(this).find('.comment_btn').click(function(e){
                 e.preventDefault();
                 $(this).closest(".box").find('.input-append').removeClass('hide');
-                $container.masonry();
+                var $commentInput = $(this).closest(".box").find('.comment_input');
+                $container.masonry({
+                    animationOptions: {
+                        duration: 800,
+                        queue: false,
+                        complete: onMasonryComplete($commentInput)
+                    }
+                });
+                return false;
             });
 
             $container.infinitescroll({
@@ -249,7 +261,15 @@
                         $( newElements ).find('.comment_btn').click(function(e){
                             e.preventDefault();
                             $(this).closest(".box").find('.input-append').removeClass('hide');
-                            $container.masonry();
+                            var $commentInput = $(this).closest(".box").find('.comment_input');
+                            $container.masonry({
+                                animationOptions: {
+                                    duration: 800,
+                                    queue: false,
+                                    complete: onMasonryComplete($commentInput)
+                                }
+                            });
+                            return false;
                         });
                         // hide new items while they are loading
                         var $newElems = $( newElements ).css({ opacity: 0 });
@@ -324,7 +344,7 @@
             </div>
             <p>${_album.title}</p>
             <div class="clearfix input-append pull-right hide">
-                <input class="span2" id="appendedInputButton" size="16" type="text"><button class="btn" type="button"><i class="icon-circle-arrow-right"></i></button>
+                <input class="span2 comment_input" size="16" type="text"><button class="btn" type="button"><i class="icon-circle-arrow-right"></i></button>
             </div>
         </div>
     #{/list}

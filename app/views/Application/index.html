@@ -212,6 +212,7 @@
     #{get 'moreScripts' /}
     <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
     <script src="@{'/public/javascripts/jquery.infinitescroll.min.js'}"></script>
+    <script src="https://raw.github.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js"></script>
     <script>
         $(function(){
 
@@ -224,6 +225,14 @@
                     itemSelector: '.box'//,
 //                    columnWidth: 100
                 });
+            });
+
+            // lazy-load
+            $('img.lazy').load(function() {
+                $container.masonry();
+            });
+            $('img.lazy').lazyload({
+                container:$container
             });
 
             var onMasonryComplete = function(focusObj) {
@@ -248,7 +257,7 @@
                         navSelector  : '#page-nav',    // selector for the paged navigation
                         nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
                         itemSelector : '.box',     // selector for all items you'll retrieve
-                        animate: true,
+//                        animate: true,
                         loading: {
                             finishedMsg: '<em>没有了...</em>',
                             img: 'http://i.imgur.com/6RMhx.gif',
@@ -278,6 +287,14 @@
                             // show elems now they're ready
                             $newElems.animate({ opacity: 1 });
                             $container.masonry( 'appended', $newElems, true );
+
+                            // lazy-load
+                            $('img.lazy').load(function() {
+                                $container.masonry();
+                            });
+                            $('img.lazy').lazyload({
+                                container:$container
+                            });
                         });
                     }
             );
@@ -336,7 +353,7 @@
     #{list items:albumList, as:'_album'}
         <div class="box thumbnail span3 masonry-brick">
             <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
-                <img src="${_album.dagefenUrl}" alt="${_album.title}">
+                <img class="lazy" src="http://placehold.it/270x305&text=dagefen.com loading..." data-original="${_album.dagefenUrl}" alt="${_album.title}">
             </a>
             <div class="actions">
                 <div class="lefter"><a href="#" class="button white comment_btn">评论</a></div>

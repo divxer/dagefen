@@ -237,7 +237,14 @@
 
             var onMasonryComplete = function(focusObj) {
                 focusObj.focus();
-            }
+                focusObj.closest("form").submit(function(e) {
+                    e.preventDefault(); //Prevent the normal submission action
+//                    alert($(this).serializeArray());
+                    console.log($(this).serialize());
+                    console.log($(this).serializeArray());
+                    return false;
+                });
+            };
 
             $(this).find('.comment_btn').click(function(e){
                 e.preventDefault();
@@ -360,9 +367,9 @@
                 <div class="righter"><a href="#" class="button white">喜欢</a><a href="#" class="button white">分享</a></div>
             </div>
             <p>${_album.title}</p>
-            <div class="clearfix input-append pull-right hide">
-                <input class="span2 comment_input" size="16" type="text"><button class="btn" type="button"><i class="icon-circle-arrow-right"></i></button>
-            </div>
+            <form class="clearfix input-append pull-right hide">
+                <input class="span2 comment_input" name="a" size="16" type="text" /><button class="btn" type="submit"><i class="icon-circle-arrow-right"></i></button>
+            </form>
         </div>
     #{/list}
 </div>

@@ -2,9 +2,12 @@ package controllers;
 
 import models.Album;
 import org.apache.commons.lang.StringUtils;
+import play.data.validation.Required;
 import play.mvc.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Application extends Controller {
 
@@ -23,4 +26,16 @@ public class Application extends Controller {
         render(albumList);
     }
 
+    public static void postComment(
+            Long albumId,
+            @Required(message = "Author is required") String author,
+            @Required(message = "A message is required") String content) {
+        Album album = Album.findById(albumId);
+        notFoundIfNull(album);
+        album.addComment(author, content);
+        flash.success("Thanks for posting %s", author);
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "true");
+        renderJSON(result);
+    }
 }

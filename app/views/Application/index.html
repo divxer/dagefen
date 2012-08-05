@@ -213,7 +213,7 @@
     <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
     <script src="@{'/public/javascripts/jquery.infinitescroll.min.js'}"></script>
     <script src="https://raw.github.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js"></script>
-    <script>
+    <script type="text/javascript">
         $(function(){
 
             var $container = $('#album-list');
@@ -235,26 +235,86 @@
                 container:$container
             });
 
-            var onMasonryComplete = function(focusObj) {
+            // form to json
+            jQuery.fn.serializeObject = function() {
+                var arrayData, objectData;
+                arrayData = this.serializeArray();
+                objectData = {};
+
+                $.each(arrayData, function() {
+                    var value;
+
+                    if (this.value != null) {
+                        value = this.value;
+                    } else {
+                        value = '';
+                    }
+
+                    if (objectData[this.name] != null) {
+                        if (!objectData[this.name].push) {
+                            objectData[this.name] = [objectData[this.name]];
+                        }
+
+                        objectData[this.name].push(value);
+                    } else {
+                        objectData[this.name] = value;
+                    }
+                });
+
+                return objectData;
+            };
+
+            var onMasonryComplete = function(focusObj, album_id) {
                 focusObj.focus();
+                focusObj.closest("form").unbind("submit");
                 focusObj.closest("form").submit(function(e) {
                     e.preventDefault(); //Prevent the normal submission action
-//                    alert($(this).serializeArray());
-                    console.log($(this).serialize());
-                    console.log($(this).serializeArray());
-                    return false;
+                    e.stopPropagation();   //this prevented it from submitting twice i a row
+                    var that = $(this);
+                    var dataValues = {};
+                    that.find('input').each(
+                            function(unusedIndex, child) {
+                                dataValues[child.name] = child.value;
+                            });
+                    $.post("@{Application.postComment()}?" + $(this).serialize() + "&&albumId=" + album_id, {}, function (data) {
+                        if (data.error) {
+                            alert("Your Comment Can Not Be Posted");
+                        } else {
+                            that.before('<p>'+dataValues.content+'</p>');
+                            that.find(':input').each(function() {
+                                switch(this.type) {
+                                    case 'password':
+                                    case 'select-multiple':
+                                    case 'select-one':
+                                    case 'text':
+                                    case 'textarea':
+                                        $(this).val('');
+                                        break;
+                                    case 'checkbox':
+                                    case 'radio':
+                                        this.checked = false;
+                                }
+                            });
+                            that.addClass('hide');
+                            $container.masonry();
+                        }
+                        return true;
+                    },'json');
+                    return true;
                 });
             };
 
             $(this).find('.comment_btn').click(function(e){
                 e.preventDefault();
+                e.stopPropagation();   //this prevented it from submitting twice i a row
+                var $album_id = $(this).closest(".box").attr("id");
                 $(this).closest(".box").find('.input-append').removeClass('hide');
                 var $commentInput = $(this).closest(".box").find('.comment_input');
                 $container.masonry({
                     animationOptions: {
                         duration: 800,
                         queue: false,
-                        complete: onMasonryComplete($commentInput)
+                        complete: onMasonryComplete($commentInput, $album_id)
                     }
                 });
                 return false;
@@ -273,16 +333,19 @@
                     },
                     // trigger Masonry as a callback
                     function( newElements ) {
-//                        // hover button
-                        $( newElements ).find('.comment_btn').click(function(e){
+                        // hover button
+                        $(this).find('.comment_btn').unbind("click");
+                       $(this).find('.comment_btn').click(function(e){
                             e.preventDefault();
+                            e.stopPropagation();   //this prevented it from submitting twice i a row
+                            var $album_id = $(this).closest(".box").attr("id");
                             $(this).closest(".box").find('.input-append').removeClass('hide');
                             var $commentInput = $(this).closest(".box").find('.comment_input');
                             $container.masonry({
                                 animationOptions: {
                                     duration: 800,
                                     queue: false,
-                                    complete: onMasonryComplete($commentInput)
+                                    complete: onMasonryComplete($commentInput, $album_id)
                                 }
                             });
                             return false;
@@ -310,19 +373,19 @@
             var $win = $(window)
                     , $nav = $('.subnav')
                     , navTop = $('.subnav').length && $('.subnav').offset().top - 40
-                    , isFixed = 0
+                    , isFixed = 0;
 
             processScroll();
 
-            $win.on('scroll', processScroll)
+            $win.on('scroll', processScroll);
 
             function processScroll() {
-                var i, scrollTop = $win.scrollTop()
+                var i, scrollTop = $win.scrollTop();
                 if (scrollTop >= navTop && !isFixed) {
-                    isFixed = 1
+                    isFixed = 1;
                     $nav.addClass('subnav-fixed')
                 } else if (scrollTop <= navTop && isFixed) {
-                    isFixed = 0
+                    isFixed = 0;
                     $nav.removeClass('subnav-fixed')
                 }
             }
@@ -349,7 +412,7 @@
     <ul class="nav nav-pills">
         <li class="active">
             <a href="/">
-                <i class="icon-bookmark"></i>&nbsp;首页
+                <i class="icon-home"></i>&nbsp;首页
             </a>
         </li>
     </ul>
@@ -358,7 +421,7 @@
 
 <div id="album-list" class="clearfix masonry">
     #{list items:albumList, as:'_album'}
-        <div class="box thumbnail span3 masonry-brick">
+        <div id="${_album.id}" class="box thumbnail span3 masonry-brick">
             <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
                 <img class="lazy" src="http://placehold.it/270x305&text=dagefen.com loading..." data-original="${_album.dagefenUrl}" alt="${_album.title}">
             </a>
@@ -367,8 +430,13 @@
                 <div class="righter"><a href="#" class="button white">喜欢</a><a href="#" class="button white">分享</a></div>
             </div>
             <p>${_album.title}</p>
+            #{if _album.comments.size()>0}
+                #{list items:((_album.comments.size()-5)>0?(_album.comments.size()-5):0).._album.comments.size()-1, as:'i'}
+                    <p>${_album.comments[i]?.content}</p>
+                #{/list}
+            #{/if}
             <form class="clearfix input-append pull-right hide">
-                <input class="span2 comment_input" name="a" size="16" type="text" /><button class="btn" type="submit"><i class="icon-circle-arrow-right"></i></button>
+                <input class="span2 comment_input" name="content" size="16" type="text" /><button class="btn" type="submit"><i class="icon-circle-arrow-right"></i></button>
             </form>
         </div>
     #{/list}

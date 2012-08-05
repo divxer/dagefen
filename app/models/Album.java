@@ -30,6 +30,9 @@ public class Album extends Model {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     public List<Picture> pictures = new ArrayList<Picture>();
 
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+    public List<AlbumComment> comments = new ArrayList<AlbumComment>();
+
     public Album(String title, String description, String type, String source, User author) {
         this.title = title;
         this.description = description;
@@ -37,6 +40,13 @@ public class Album extends Model {
         this.source = source;
         this.updateTime = new Date();
         this.author = author;
+    }
+
+    public Album addComment(String author, String content) {
+        AlbumComment newComment = new AlbumComment(this, author, content).save();
+        this.comments.add(newComment);
+        this.save();
+        return this;
     }
 
     @PostPersist

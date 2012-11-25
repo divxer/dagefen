@@ -1,5 +1,3 @@
-package jobs;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +22,6 @@ import org.jsoup.select.Elements;
 
 import play.Logger;
 import play.db.jpa.JPA;
-import play.jobs.Job;
 import play.libs.Codec;
 import play.mvc.Router;
 import play.vfs.VirtualFile;
@@ -32,15 +29,12 @@ import utils.BaseX;
 import utils.UpYunUtils;
 
 /**
- * User: divxer Date: 12-6-4 Time: 上午12:17
+ * User: divxer Date: 12-11-25 Time: 下午1:17
  */
-// @Every("7h")
-// @OnApplicationStart(async=true)
-public class Picture4493Crawler extends Job {
-  public static final String domainName = "http://www.4493.com";
-
-  public void doJob() {
+public class Picture4493CrawlerTest {
+  public static void main(String[] args) {
     try {
+      String domainName = "http://www.4493.com";
       Document doc = Jsoup.connect(domainName).timeout(10000).get();
 
       // 获取文章列表
@@ -90,7 +84,7 @@ public class Picture4493Crawler extends Job {
         String articleUrl = article.children().first().attr("abs:href");
         String articleTitle = articleLink.text();
         // 新专辑，开始抓取
-        if (Album.find("bySource", articleUrl).fetch().size() == 0) {
+        if (true) { // Album.find("bySource", articleUrl).fetch().size() == 0) {
           Logger.info("fetch album: " + articleTitle + " url: " + articleUrl);
           processArticle(articleUrl, articleTitle);
         }
@@ -106,11 +100,11 @@ public class Picture4493Crawler extends Job {
       Document doc = Jsoup.connect(articleUrl).timeout(10000).get();
 
       Album album;
-      if (Album.find("bySource", articleUrl).fetch().size() == 0) {
-        album = new Album(articleTitle, "", "", articleUrl, null);
-      } else {
-        album = Album.find("bySource", articleUrl).first();
-      }
+      // if (Album.find("bySource", articleUrl).fetch().size() == 0) {
+      album = new Album(articleTitle, "", "", articleUrl, null);
+      // } else {
+      // album = Album.find("bySource", articleUrl).first();
+      // }
 
       Elements elements =
           doc.select("html body div.allbox div.pic_content div.pic_show div.page1 a");
@@ -142,10 +136,14 @@ public class Picture4493Crawler extends Job {
         return;
       }
       String sourceUrl = imgElement.attr("abs:src");
-      if (Picture.find("bySource", sourceUrl).fetch().size() != 0) {
-        Logger.info("picture url: " + sourceUrl + " is exist!");
-        return;
-      }
+      // if (Picture.find("bySource", sourceUrl).fetch().size() != 0) {
+      // Logger.info("picture url: " + sourceUrl + " is exist!");
+      // return;
+      // }
+
+      System.out.println("imge url: " + sourceUrl);
+
+      if (true) return;
 
       String dagefenUrl = fetch2Dagefen(sourceUrl);
       if (dagefenUrl != null && album.dagefenUrl == null) {

@@ -46,7 +46,7 @@ public class MmonlyCrawler extends Job {
             Document doc = Jsoup.connect(domainName).timeout(10000).get();
 
             // 获取文章列表
-            Elements listPage = doc.select("html body div.wrap div.nav ul li a");
+      Elements listPage = doc.select("html body div.headBG div.headBGtop div.nav ul li a");
 
             for (Element element : listPage) {
                 if (!element.attr("abs:href").contains("http://www.mmonly.com/meinvtaotu")
@@ -118,7 +118,13 @@ public class MmonlyCrawler extends Job {
         try {
             Document doc = Jsoup.connect(articleUrl).timeout(10000).get();
 
-            Element titleElement = doc.select("html body#body div.wrap div.arcOther div.arcTitle h1 a").first();
+      Element titleElement =
+          doc.select("html body#body div.wrap div.arcOther div.arcTitle h1").first();
+      if (titleElement == null) {
+          Logger.warn("page title of: " + articleUrl + " is null");
+          return;
+      }
+
             String title = titleElement.text();
 
             Element descriptionElement = doc.select("html body#body div.wrap div.arcOther div.arcDES").first();

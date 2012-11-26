@@ -24,6 +24,7 @@ import org.jsoup.select.Elements;
 
 import play.Logger;
 import play.db.jpa.JPA;
+import play.jobs.Every;
 import play.jobs.Job;
 import play.libs.Codec;
 import play.mvc.Router;
@@ -34,7 +35,7 @@ import utils.UpYunUtils;
 /**
  * User: divxer Date: 12-6-4 Time: 上午12:17
  */
-// @Every("7h")
+@Every("7h")
 // @OnApplicationStart(async=true)
 public class Picture4493Crawler extends Job {
   public static final String domainName = "http://www.4493.com";

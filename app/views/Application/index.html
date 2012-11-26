@@ -3,409 +3,495 @@
 
 #{set 'moreStyles'}
     #{get 'moreStyles' /}
-    <style type="text/css">
-        .box {
-            margin: 5px;
-            padding: 5px;
-            font-size: 11px;
-            line-height: 1.4em;
-            float: left;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
-        }
+<link href="http://nikku.github.com/jquery-bootstrap-scripting/css/jquery-dialog2/jquery.dialog2.css" rel="stylesheet">
+<style type="text/css">
+.box {
+    margin: 5px;
+    padding: 5px;
+    font-size: 11px;
+    line-height: 1.4em;
+    float: left;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
 
-        .box h2 {
-            font-size: 14px;
-            font-weight: 200;
-        }
+.box h2 {
+    font-size: 14px;
+    font-weight: 200;
+}
 
-        /* Infinite Scroll loader */
-        #infscr-loading {
-            text-align: center;
-            z-index: 100;
-            position: fixed;
-            left: 45%;
-            bottom: 40px;
-            width: 200px;
-            padding: 10px;
-            background: #000;
-            opacity: 0.8;
-            color: #FFF;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
+    /* Infinite Scroll loader */
+#infscr-loading {
+    text-align: center;
+    z-index: 100;
+    position: fixed;
+    left: 45%;
+    bottom: 40px;
+    width: 200px;
+    padding: 10px;
+    background: #000;
+    opacity: 0.8;
+    color: #FFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
 
-        .topcont {
-            cursor: pointer;
-            background: url("@{'/public/images/container_bg.png'}") repeat scroll 0 0 #F9F9FA;
-            border-radius: 5px 5px 0 0;
-            -webkit-border-radius: 5px 5px 0 0;
-            -moz-border-radius: 5px 5px 0 0;
-            border: 2px solid #FFF;
-            color: #333;
-            text-shadow: 0 1px 0 #FFF;
-            font-weight: 700;
-            font-size: 14px;
-            text-align: left;
-            margin: -2px 0;
-            padding: 8px 12px
-        }
+.topcont {
+    cursor: pointer;
+    background: url("@{'/public/images/container_bg.png'}") repeat scroll 0 0 #F9F9FA;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border: 2px solid #FFF;
+    color: #333;
+    text-shadow: 0 1px 0 #FFF;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: left;
+    margin: -2px 0;
+    padding: 8px 12px
+}
 
-        .box img,
-        #tumblelog img {
-            display: block;
-            width: 100%;
-        }
+.box img,
+#tumblelog img {
+    display: block;
+    width: 100%;
+}
 
-        /* showpic */
-        .box .actions{display:none;}
-        .box:hover .actions{display:block;}
-        .box:hover img{filter:alpha(opacity=70);-moz-opacity:0.7;-khtml-opacity:0.7;opacity:0.7;}
-        .box p{line-height:22px;margin:10px 0 0 0;padding:5px 10px;border-top:solid 1px #F5F2F2;background:#FAFAFA;}
-        .box .actions{position:absolute;top:5px;left:0;z-index:3;width:100%;}
-        .box .actions .lefter{float:left;margin:0 0 0 5px;display:inline;}
-        .box .actions .righter{float:right;}
-        .box .actions .righter a{margin:0 5px 0 0;}
-        /* button */
-        .button{
-            display:inline-block;
-            text-decoration:none;
-            font:bold 12px/12px HelveticaNeue, Arial;
-            padding:8px 11px;
-            color:#555;
-            border:1px solid #dedede;
-            -webkit-border-radius:3px;
-            -moz-border-radius:3px;
-            border-radius:3px;
-            cursor:pointer;
-        }
-        .button.white{
-            background:#f5f5f5;
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f0f0f0'); /*  IE */
-            background:-webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f0f0f0)); /*  WebKit */
-            background:-moz-linear-gradient(top,  #f9f9f9, #f0f0f0);
-            border-color:#dedede #d8d8d8 #d3d3d3;
-            color:#555;
-            text-shadow:0 1px 0 #fff;
-            -webkit-box-shadow:0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
-            -moz-box-shadow:0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
-            box-shadow:0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
-        }
-        .button.white:hover{
-            border-color:#c7c7c7 #c3c3c3 #bebebe;
-            text-shadow:0 1px 0 #fdfdfd;
-            -webkit-box-shadow:0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
-            -moz-box-shadow:0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
-            box-shadow:0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
-        }
-        .button.white:active{
-            background:#f4f4f4;
-            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#f8f8f8'); /*  IE */
-            background:-webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#f8f8f8)); /*  WebKit */
-            background:-moz-linear-gradient(top,  #eeeeee, #f8f8f8);
-            border-color:#c7c7c7 #c3c3c3 #bebebe;
-            text-shadow:0 1px 0 #fdfdfd;
-            -webkit-box-shadow:0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
-            -moz-box-shadow:0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
-            box-shadow:0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
-        }
+    /* showpic */
+.box .actions {
+    display: none;
+}
 
-        /* Subnav */
-        .subnav {
-            width: 100%;
-            height: 36px;
-            background-color: #eeeeee; /* Old browsers */
-            background-repeat: repeat-x; /* Repeat the gradient */
-            background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
-            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
-            background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
-            background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* IE10+ */
-            background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-            background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
-            border: 1px solid #e5e5e5;
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            border-radius: 4px;
-        }
-        .subnav .nav {
-            margin-bottom: 0;
-        }
-        .subnav .nav > li > a {
-            margin: 0;
-            padding-top:    11px;
-            padding-bottom: 11px;
-            border-left: 1px solid #f5f5f5;
-            border-right: 1px solid #e5e5e5;
-            -webkit-border-radius: 0;
-            -moz-border-radius: 0;
-            border-radius: 0;
-        }
-        .subnav .nav > .active > a,
-        .subnav .nav > .active > a:hover {
-            padding-left: 13px;
-            color: #777;
-            background-color: #e9e9e9;
-            border-right-color: #ddd;
-            border-left: 0;
-            -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
-            -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
-            box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
-        }
-        .subnav .nav > .active > a .caret,
-        .subnav .nav > .active > a:hover .caret {
-            border-top-color: #777;
-        }
-        .subnav .nav > li:first-child > a,
-        .subnav .nav > li:first-child > a:hover {
-            border-left: 0;
-            padding-left: 12px;
-            -webkit-border-radius: 4px 0 0 4px;
-            -moz-border-radius: 4px 0 0 4px;
-            border-radius: 4px 0 0 4px;
-        }
-        .subnav .nav > li:last-child > a {
-            border-right: 0;
-        }
-        .subnav .dropdown-menu {
-            -webkit-border-radius: 0 0 4px 4px;
-            -moz-border-radius: 0 0 4px 4px;
-            border-radius: 0 0 4px 4px;
-        }
+.box:hover .actions {
+    display: block;
+}
 
-        /* Fixed subnav on scroll, but only for 980px and up (sorry IE!) */
-        @media (min-width: 980px) {
-            .subnav-fixed {
-                position: fixed;
-                top: 40px;
-                left: 0;
-                right: 0;
-                z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
-                border-color: #d5d5d5;
-                border-width: 0 0 1px; /* drop the border on the fixed edges */
-                -webkit-border-radius: 0;
-                -moz-border-radius: 0;
-                border-radius: 0;
-                -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
-                -moz-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
-                box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.1);
-                filter: progid:DXImageTransform.Microsoft.gradient(enabled=false); /* IE6-9 */
-            }
-            .subnav-fixed .nav {
-                width: 1170px;
-                margin: 0 auto;
-                padding: 0 1px;
-            }
-            .subnav .nav > li:first-child > a,
-            .subnav .nav > li:first-child > a:hover {
-                -webkit-border-radius: 0;
-                -moz-border-radius: 0;
-                border-radius: 0;
-            }
-        }
-    </style>
+.box:hover img {
+    filter: alpha(opacity = 70);
+    -moz-opacity: 0.7;
+    -khtml-opacity: 0.7;
+    opacity: 0.7;
+}
+
+.box p {
+    line-height: 22px;
+    margin: 10px 0 0 0;
+    padding: 5px 10px;
+    border-top: solid 1px #F5F2F2;
+    background: #FAFAFA;
+}
+
+.box .actions {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+}
+
+.box .actions .lefter {
+    float: left;
+    margin: 0 0 0 5px;
+    display: inline;
+}
+
+.box .actions .righter {
+    float: right;
+}
+
+.box .actions .righter a {
+    margin: 0 5px 0 0;
+}
+
+    /* button */
+.button {
+    display: inline-block;
+    text-decoration: none;
+    font: bold 12px/12px HelveticaNeue, Arial;
+    padding: 8px 11px;
+    color: #555;
+    border: 1px solid #dedede;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.button.white {
+    background: #f5f5f5;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f9f9f9', endColorstr = '#f0f0f0'); /*  IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f0f0f0)); /*  WebKit */
+    background: -moz-linear-gradient(top, #f9f9f9, #f0f0f0);
+    border-color: #dedede #d8d8d8 #d3d3d3;
+    color: #555;
+    text-shadow: 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+    -moz-box-shadow: 0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+    box-shadow: 0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+}
+
+.button.white:hover {
+    border-color: #c7c7c7 #c3c3c3 #bebebe;
+    text-shadow: 0 1px 0 #fdfdfd;
+    -webkit-box-shadow: 0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
+    -moz-box-shadow: 0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
+    box-shadow: 0 1px 1px #ebebeb, inset 0 1px 0 #f3f3f3;
+}
+
+.button.white:active {
+    background: #f4f4f4;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#eeeeee', endColorstr = '#f8f8f8'); /*  IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#f8f8f8)); /*  WebKit */
+    background: -moz-linear-gradient(top, #eeeeee, #f8f8f8);
+    border-color: #c7c7c7 #c3c3c3 #bebebe;
+    text-shadow: 0 1px 0 #fdfdfd;
+    -webkit-box-shadow: 0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
+    -moz-box-shadow: 0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
+    box-shadow: 0 1px 1px #ebebeb, inset 2px 2px 2px #dddddd;
+}
+
+    /* Subnav */
+.subnav {
+    width: 100%;
+    height: 36px;
+    background-color: #eeeeee; /* Old browsers */
+    background-repeat: repeat-x; /* Repeat the gradient */
+    background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #eeeeee)); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
+    background-image: -ms-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* IE10+ */
+    background-image: -o-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* Opera 11.10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f5f5f5', endColorstr = '#eeeeee', GradientType = 0); /* IE6-9 */
+    background-image: linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* W3C */
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.subnav .nav {
+    margin-bottom: 0;
+}
+
+.subnav .nav > li > a {
+    margin: 0;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    border-left: 1px solid #f5f5f5;
+    border-right: 1px solid #e5e5e5;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.subnav .nav > .active > a,
+.subnav .nav > .active > a:hover {
+    padding-left: 13px;
+    color: #777;
+    background-color: #e9e9e9;
+    border-right-color: #ddd;
+    border-left: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .05);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .05);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .05);
+}
+
+.subnav .nav > .active > a .caret,
+.subnav .nav > .active > a:hover .caret {
+    border-top-color: #777;
+}
+
+.subnav .nav > li:first-child > a,
+.subnav .nav > li:first-child > a:hover {
+    border-left: 0;
+    padding-left: 12px;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+
+.subnav .nav > li:last-child > a {
+    border-right: 0;
+}
+
+.subnav .dropdown-menu {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+}
+
+    /* Fixed subnav on scroll, but only for 980px and up (sorry IE!) */
+@media (min-width: 980px) {
+    .subnav-fixed {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        right: 0;
+        z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
+        border-color: #d5d5d5;
+        border-width: 0 0 1px; /* drop the border on the fixed edges */
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0, 0, 0, .1);
+        -moz-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0, 0, 0, .1);
+        box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0, 0, 0, .1);
+        filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); /* IE6-9 */
+    }
+
+    .subnav-fixed .nav {
+        width: 1170px;
+        margin: 0 auto;
+        padding: 0 1px;
+    }
+
+    .subnav .nav > li:first-child > a,
+    .subnav .nav > li:first-child > a:hover {
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+}
+</style>
 #{/set}
 
 #{set 'moreScripts'}
     #{get 'moreScripts' /}
-    <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
-    <script src="@{'/public/javascripts/jquery.infinitescroll.min.js'}"></script>
-    <script src="https://raw.github.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js"></script>
-    <script type="text/javascript">
-        $(function(){
+<script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+<script src="@{'/public/javascripts/jquery.infinitescroll.min.js'}"></script>
+<script src="https://raw.github.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js"></script>
+<script src="http://nikku.github.com/jquery-bootstrap-scripting/js/jquery.controls.js"></script>
+<script src="http://nikku.github.com/jquery-bootstrap-scripting/js/jquery.form.js"></script>
+<script src="http://nikku.github.com/jquery-bootstrap-scripting/js/jquery.dialog2.js"></script>
+<script src="http://nikku.github.com/jquery-bootstrap-scripting/js/jquery.dialog2.helpers.js"></script>
+<script type="text/javascript">
+$(function () {
 
-            var $container = $('#album-list');
+    var $container = $('#album-list');
 
-            $container.imagesLoaded(function(){
-                $('#loading').remove();
+//            $('a[data-toggle=modal]').on('click', function (event) {
+//                var albumId = $(this).data('modal').options.albumId;
+////                $(this).find('.person').html(albumId);
+//                $.get(this.href, { id: albumId }, function(data) {
+//                    $('#contentDiv').html(data).modal('show');
+//                });
+//                return false;
+//            });
+//            ($("a[data-toggle=modal]")).click(function() {
+//                var albumId = $(this).data('modal').options.albumId;
+//                var target, url;
+//                target = ($(this)).attr('data-target');
+//                url = ($(this)).attr('href');
+//                return ($(target)).load(url);
+//            });
 
-                $container.masonry({
-                    itemSelector: '.box'//,
+//            $('#myModal').on('show', function (event) {
+//                var albumId = $(this).data('modal').options.albumId;
+//                var url = ($(this)).data('modal').options.url;
+//                $.get(url, function (data) {
+//                    $(this).find('#modal-body').html(data);
+//                })
+//            });
+//            $(".open-dialog").click(function(event) {
+//                event.preventDefault();
+//                $("#sample2-dialog").dialog2("open");
+//            });
+
+    $(document).controls();
+
+    $container.imagesLoaded(function () {
+        $('#loading').remove();
+
+        $container.masonry({
+            itemSelector: '.box'//,
 //                    columnWidth: 100
-                });
-            });
+        });
+    });
 
-            // lazy-load
-            $('img.lazy').load(function() {
-                $container.masonry();
-            });
-            $('img.lazy').lazyload({
-                container:$container
-            });
+    // lazy-load
+    $('img.lazy').load(function () {
+        $container.masonry();
+    });
+    $('img.lazy').lazyload({
+        container: $container
+    });
 
-            // form to json
-            jQuery.fn.serializeObject = function() {
-                var arrayData, objectData;
-                arrayData = this.serializeArray();
-                objectData = {};
+    // form to json
+    jQuery.fn.serializeObject = function () {
+        var arrayData, objectData;
+        arrayData = this.serializeArray();
+        objectData = {};
 
-                $.each(arrayData, function() {
-                    var value;
+        $.each(arrayData, function () {
+            var value;
 
-                    if (this.value != null) {
-                        value = this.value;
-                    } else {
-                        value = '';
-                    }
-
-                    if (objectData[this.name] != null) {
-                        if (!objectData[this.name].push) {
-                            objectData[this.name] = [objectData[this.name]];
-                        }
-
-                        objectData[this.name].push(value);
-                    } else {
-                        objectData[this.name] = value;
-                    }
-                });
-
-                return objectData;
-            };
-
-            var onMasonryComplete = function(focusObj, album_id) {
-                focusObj.focus();
-                focusObj.closest("form").unbind("submit");
-                focusObj.closest("form").submit(function(e) {
-                    e.preventDefault(); //Prevent the normal submission action
-                    e.stopPropagation();   //this prevented it from submitting twice i a row
-                    var that = $(this);
-                    var dataValues = {};
-                    that.find('input').each(
-                            function(unusedIndex, child) {
-                                dataValues[child.name] = child.value;
-                            });
-                    $.post("@{Application.postComment()}?" + $(this).serialize() + "&&albumId=" + album_id, {}, function (data) {
-                        if (data.error) {
-                            alert("Your Comment Can Not Be Posted");
-                        } else {
-                            that.before('<p>'+dataValues.content+'</p>');
-                            that.find(':input').each(function() {
-                                switch(this.type) {
-                                    case 'password':
-                                    case 'select-multiple':
-                                    case 'select-one':
-                                    case 'text':
-                                    case 'textarea':
-                                        $(this).val('');
-                                        break;
-                                    case 'checkbox':
-                                    case 'radio':
-                                        this.checked = false;
-                                }
-                            });
-                            that.addClass('hide');
-                            $container.masonry();
-                        }
-                        return true;
-                    },'json');
-                    return true;
-                });
-            };
-
-            $(this).find('.comment_btn').click(function(e){
-                e.preventDefault();
-                e.stopPropagation();   //this prevented it from submitting twice i a row
-                var $album_id = $(this).closest(".box").attr("id");
-                $(this).closest(".box").find('.input-append').removeClass('hide');
-                var $commentInput = $(this).closest(".box").find('.comment_input');
-                $container.masonry({
-                    animationOptions: {
-                        duration: 800,
-                        queue: false,
-                        complete: onMasonryComplete($commentInput, $album_id)
-                    }
-                });
-                return false;
-            });
-
-            $container.infinitescroll({
-                        navSelector  : '#page-nav',    // selector for the paged navigation
-                        nextSelector : '#page-nav a',  // selector for the NEXT link (to page 2)
-                        itemSelector : '.box',     // selector for all items you'll retrieve
-//                        animate: true,
-                        loading: {
-                            finishedMsg: '<em>没有了...</em>',
-                            img: 'http://i.imgur.com/6RMhx.gif',
-                            msgText: "<em>正在加载...</em>"
-                        }
-                    },
-                    // trigger Masonry as a callback
-                    function( newElements ) {
-                        // hover button
-                        $(this).find('.comment_btn').unbind("click");
-                       $(this).find('.comment_btn').click(function(e){
-                            e.preventDefault();
-                            e.stopPropagation();   //this prevented it from submitting twice i a row
-                            var $album_id = $(this).closest(".box").attr("id");
-                            $(this).closest(".box").find('.input-append').removeClass('hide');
-                            var $commentInput = $(this).closest(".box").find('.comment_input');
-                            $container.masonry({
-                                animationOptions: {
-                                    duration: 800,
-                                    queue: false,
-                                    complete: onMasonryComplete($commentInput, $album_id)
-                                }
-                            });
-                            return false;
-                        });
-                        // hide new items while they are loading
-                        var $newElems = $( newElements ).css({ opacity: 0 });
-                        // ensure that images load before adding to masonry layout
-                        $newElems.imagesLoaded(function(){
-                            // show elems now they're ready
-                            $newElems.animate({ opacity: 1 });
-                            $container.masonry( 'appended', $newElems, true );
-
-                            // lazy-load
-                            $('img.lazy').load(function() {
-                                $container.masonry();
-                            });
-                            $('img.lazy').lazyload({
-                                container:$container
-                            });
-                        });
-                    }
-            );
-
-            // fix sub nav on scroll
-            var $win = $(window)
-                    , $nav = $('.subnav')
-                    , navTop = $('.subnav').length && $('.subnav').offset().top - 40
-                    , isFixed = 0;
-
-            processScroll();
-
-            $win.on('scroll', processScroll);
-
-            function processScroll() {
-                var i, scrollTop = $win.scrollTop();
-                if (scrollTop >= navTop && !isFixed) {
-                    isFixed = 1;
-                    $nav.addClass('subnav-fixed')
-                } else if (scrollTop <= navTop && isFixed) {
-                    isFixed = 0;
-                    $nav.removeClass('subnav-fixed')
-                }
+            if (this.value != null) {
+                value = this.value;
+            } else {
+                value = '';
             }
 
-            (function() {
-                var $backToTopEle = $('#topcontrol').click(function() {
-                    $("html, body").animate({ scrollTop: 0 }, 120);
-                }), $backToTopFun = function() {
-                    var st = $(document).scrollTop(), winh = $(window).height();
-                    (st > 0)? $backToTopEle.show(): $backToTopEle.hide();
-                    //IE6下的定位
-                    if (!window.XMLHttpRequest) {
-                        $backToTopEle.css("top", st + winh - 166);
-                    }
-                };
-                $(window).bind("scroll", $backToTopFun);
-                $(function() { $backToTopFun(); });
-            })();
+            if (objectData[this.name] != null) {
+                if (!objectData[this.name].push) {
+                    objectData[this.name] = [objectData[this.name]];
+                }
+
+                objectData[this.name].push(value);
+            } else {
+                objectData[this.name] = value;
+            }
         });
-    </script>
+
+        return objectData;
+    };
+
+    var onMasonryComplete = function (focusObj, album_id) {
+        focusObj.focus();
+        focusObj.closest("form").unbind("submit");
+        focusObj.closest("form").submit(function (e) {
+            e.preventDefault(); //Prevent the normal submission action
+            e.stopPropagation();   //this prevented it from submitting twice i a row
+            var that = $(this);
+            var dataValues = {};
+            that.find('input').each(
+                    function (unusedIndex, child) {
+                        dataValues[child.name] = child.value;
+                    });
+            $.post("@{Application.postComment()}?" + $(this).serialize() + "&&albumId=" + album_id, {}, function (data) {
+                if (data.error) {
+                    alert("Your Comment Can Not Be Posted");
+                } else {
+                    that.before('<p>' + dataValues.content + '</p>');
+                    that.find(':input').each(function () {
+                        switch (this.type) {
+                            case 'password':
+                            case 'select-multiple':
+                            case 'select-one':
+                            case 'text':
+                            case 'textarea':
+                                $(this).val('');
+                                break;
+                            case 'checkbox':
+                            case 'radio':
+                                this.checked = false;
+                        }
+                    });
+                    that.addClass('hide');
+                    $container.masonry();
+                }
+                return true;
+            }, 'json');
+            return true;
+        });
+    };
+
+    $(this).find('.comment_btn').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();   //this prevented it from submitting twice i a row
+        var $album_id = $(this).closest(".box").attr("id");
+        $(this).closest(".box").find('.input-append').removeClass('hide');
+        var $commentInput = $(this).closest(".box").find('.comment_input');
+        $container.masonry({
+            animationOptions: {
+                duration: 800,
+                queue: false,
+                complete: onMasonryComplete($commentInput, $album_id)
+            }
+        });
+        return false;
+    });
+
+    $container.infinitescroll({
+                navSelector: '#page-nav',    // selector for the paged navigation
+                nextSelector: '#page-nav a',  // selector for the NEXT link (to page 2)
+                itemSelector: '.box',     // selector for all items you'll retrieve
+//                        animate: true,
+                loading: {
+                    finishedMsg: '<em>没有了...</em>',
+                    img: 'http://i.imgur.com/6RMhx.gif',
+                    msgText: "<em>正在加载...</em>"
+                }
+            },
+            // trigger Masonry as a callback
+            function (newElements) {
+                // hover button
+                $(this).find('.comment_btn').unbind("click");
+                $(this).find('.comment_btn').click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();   //this prevented it from submitting twice i a row
+                    var $album_id = $(this).closest(".box").attr("id");
+                    $(this).closest(".box").find('.input-append').removeClass('hide');
+                    var $commentInput = $(this).closest(".box").find('.comment_input');
+                    $container.masonry({
+                        animationOptions: {
+                            duration: 800,
+                            queue: false,
+                            complete: onMasonryComplete($commentInput, $album_id)
+                        }
+                    });
+                    return false;
+                });
+                // hide new items while they are loading
+                var $newElems = $(newElements).css({ opacity: 0 });
+                // ensure that images load before adding to masonry layout
+                $newElems.imagesLoaded(function () {
+                    // show elems now they're ready
+                    $newElems.animate({ opacity: 1 });
+                    $container.masonry('appended', $newElems, true);
+
+                    // lazy-load
+                    $('img.lazy').load(function () {
+                        $container.masonry();
+                    });
+                    $('img.lazy').lazyload({
+                        container: $container
+                    });
+                });
+            }
+    );
+
+    // fix sub nav on scroll
+    var $win = $(window)
+            , $nav = $('.subnav')
+            , navTop = $('.subnav').length && $('.subnav').offset().top - 40
+            , isFixed = 0;
+
+    processScroll();
+
+    $win.on('scroll', processScroll);
+
+    function processScroll() {
+        var i, scrollTop = $win.scrollTop();
+        if (scrollTop >= navTop && !isFixed) {
+            isFixed = 1;
+            $nav.addClass('subnav-fixed')
+        } else if (scrollTop <= navTop && isFixed) {
+            isFixed = 0;
+            $nav.removeClass('subnav-fixed')
+        }
+    }
+
+    (function () {
+        var $backToTopEle = $('#topcontrol').click(function () {
+            $("html, body").animate({ scrollTop: 0 }, 120);
+        }), $backToTopFun = function () {
+            var st = $(document).scrollTop(), winh = $(window).height();
+            (st > 0) ? $backToTopEle.show() : $backToTopEle.hide();
+            //IE6下的定位
+            if (!window.XMLHttpRequest) {
+                $backToTopEle.css("top", st + winh - 166);
+            }
+        };
+        $(window).bind("scroll", $backToTopFun);
+        $(function () {
+            $backToTopFun();
+        });
+    })();
+});
+</script>
 #{/set}
 
 <div class="subnav">
@@ -420,31 +506,49 @@
 </div>
 
 <div id="album-list" class="clearfix masonry">
-    #{list items:albumList, as:'_album'}
-        <div id="${_album.id}" class="box thumbnail span3 masonry-brick">
-            <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
-                <img class="lazy" src="http://placehold.it/270x305&text=dagefen.com loading..." data-original="${_album.dagefenUrl}" alt="${_album.title}">
-            </a>
-            <div class="actions">
-                <div class="lefter"><a href="#" class="button white comment_btn">评论</a></div>
-                <div class="righter"><a href="#" class="button white">喜欢</a><a href="#" class="button white">分享</a></div>
-            </div>
-            <p>${_album.title}</p>
-            #{if _album.comments.size()>0}
-                #{list items:((_album.comments.size()-5)>0?(_album.comments.size()-5):0).._album.comments.size()-1, as:'i'}
-                    <p>${_album.comments[i]?.content}</p>
-                #{/list}
-            #{/if}
-            <form class="clearfix input-append pull-right hide">
-                <input class="span2 comment_input" name="content" size="16" type="text" /><button class="btn" type="submit"><i class="icon-circle-arrow-right"></i></button>
-            </form>
+#{list items:albumList, as:'_album'}
+    <div id="${_album.id}" class="box thumbnail span3 masonry-brick">
+        <a href="@{Albums.show(_album.id)}" title="${_album.title}" target="_blank">
+            <img class="lazy" src="http://placehold.it/270x305&text=dagefen.com loading..."
+                 data-original="${_album.dagefenUrl}" alt="${_album.title}">
+        </a>
+
+        <div class="actions">
+            <div class="lefter"><a href="#" class="button white comment_btn">评论</a></div>
+            <div class="righter"><a href="#" class="button white">喜欢</a><a class="button white open-dialog"
+                                                                           rel="sample2-dialog"
+                                                                           href="/shareit/${_album.id}">分享</a></div>
         </div>
-    #{/list}
+        <p>${_album.title}</p>
+        #{if _album.comments.size()>0}
+            #{list items:((_album.comments.size()-5)>0?(_album.comments.size()-5):0).._album.comments.size()-1, as:'i'}
+                <p>${_album.comments[i]?.content}</p>
+            #{/list}
+        #{/if}
+        <form class="clearfix input-append pull-right hide">
+            <input class="span2 comment_input" name="content" size="16" type="text"/>
+            <button class="btn" type="submit"><i class="icon-circle-arrow-right"></i></button>
+        </form>
+    </div>
+#{/list}
 </div>
 
 <nav id="page-nav">
     <a href="@{Application.index(2, flash.searchText)}"></a>
 </nav>
+
+<div class="modal hide" id="myModal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3>分享到</h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a href="#" class="btn btn-primary">Save changes</a>
+    </div>
+</div>
 
 <div id="topcontrol" style="position: fixed; bottom: 0px; right: 0px; opacity: 1; cursor: pointer; " title="返回顶部">
     <div class="topcont">返回顶部<span class="arrowon"></span></div>

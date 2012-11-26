@@ -3,54 +3,92 @@
 
 #{set 'moreStyles'}
     #{get 'moreStyles' /}
-    <link href="@{'/public/stylesheets/carousel.css'}" rel="stylesheet">
+*{<link href="@{'/public/stylesheets/carousel.css'}" rel="stylesheet">}*
+
+<link href="http://www.jacklmoore.com/colorbox/example1/colorbox.css" rel="stylesheet">
 #{/set}
 
 <div class="alert alert-block alert-info">
     <h3>${album.title}</h3>
+
     <p>${album.description}</p>
 </div>
 
 <hr>
 
-<div id="carousel-container" style="height: 430px; width: 100%; ">
-    <div id="carousel-gallery" class="touchcarousel  black-and-white">
-        <ul class="touchcarousel-container">
-        #{list items:album.pictures, as:'_picture'}
-            <li class="touchcarousel-item">
-                <a href="@{Pictures.show(_picture.id)}" title="拖动浏览，点击查看大图" target="_blank">
-                    <img src="${_picture.dagefenUrl}" alt="${_picture.title}" height="400" >
-                </a>
-            </li>
-        #{/list}
-        </ul>
+*{<div id="carousel-container" style="height: 430px; width: 100%; ">}*
+*{<div id="carousel-gallery" class="touchcarousel  black-and-white">}*
+*{<ul class="touchcarousel-container">}*
+*{#{list items:album.pictures, as:'_picture'}}*
+*{<li class="touchcarousel-item">}*
+*{<a class="'gallery" href="@{Pictures.show(_picture.id)}" title="拖动浏览，点击查看大图" target="_blank">}*
+*{<img src="${_picture.dagefenUrl}" alt="${_picture.title}" height="400" >}*
+*{</a>}*
+*{</li>}*
+*{<p><a class="gallery1" href="${_picture.dagefenUrl}" title="${_picture.title}">${_picture.title}</a></p>}*
+*{#{/list}}*
+*{</ul>}*
+*{</div>}*
+*{</div>}*
+
+<div id="picture-list" class="clearfix masonry">
+#{list items:album.pictures, as:'_picture'}
+    <div id="${_picture.id}" class="box thumbnail span3 masonry-brick">
+        <a class="gallery" href="${_picture.dagefenUrl}" title="${_picture.title}">
+            <img class="lazy" src="http://placehold.it/270x305&text=dagefen.com loading..."
+                 data-original="${_picture.dagefenUrl}" alt="${_picture.title}">
+        </a>
     </div>
+#{/list}
 </div>
 
 #{set 'moreScripts'}
     #{get 'moreScripts' /}
-    <script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
-    <script src="@{'/public/javascripts/carousel.js'}"></script>
-    <script>
-        $(function(){
-            var $container = $('#carousel-container');
+*{<script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>}*
+*{<script src="@{'/public/javascripts/carousel.js'}"></script>}*
+<script src="@{'/public/javascripts/jquery.colorbox-min.js'}"></script>
+<script src="https://raw.github.com/tuupola/jquery_lazyload/master/jquery.lazyload.min.js"></script>
+<script src="@{'/public/javascripts/jquery.masonry.min.js'}"></script>
+<script>
+    //        $(function(){
+    //            var $container = $('#carousel-container');
+    //
+    //            $container.imagesLoaded(function(){
+    //                carouselInstance = $("#carousel-gallery").touchCarousel({
+    //                    autoplay:true,               // Autoplay enabled
+    //                    autoplayDelay:3000,	          // Delay between transitions
+    //                    autoplayStopAtAction:true,    // Stop autoplay forever when user clicks arrow or does any other action
+    //                    itemsPerPage: 1,
+    //                    scrollbar: true,
+    //                    scrollbarAutoHide: true,
+    //                    scrollbarTheme: "dark",
+    //                    pagingNav: true,
+    //                    snapToItems: true,
+    //                    scrollToLast: true,
+    //                    useWebkit3d: true,
+    //                    loopItems: true
+    //                }).data('touchCarousel');
+    //            });
+    //        });
 
-            $container.imagesLoaded(function(){
-                carouselInstance = $("#carousel-gallery").touchCarousel({
-                    autoplay:true,               // Autoplay enabled
-                    autoplayDelay:3000,	          // Delay between transitions
-                    autoplayStopAtAction:true,    // Stop autoplay forever when user clicks arrow or does any other action
-                    itemsPerPage: 1,
-                    scrollbar: true,
-                    scrollbarAutoHide: true,
-                    scrollbarTheme: "dark",
-                    pagingNav: true,
-                    snapToItems: true,
-                    scrollToLast: true,
-                    useWebkit3d: true,
-                    loopItems: true
-                }).data('touchCarousel');
-            });
+    jQuery(document).ready(function () {
+        $("a.gallery").colorbox({rel: 'group3', transition: "none", width: "90%", height: "90%"});
+
+        var $container = $('#picture-list');
+        $container.masonry({
+            animationOptions: {
+                duration: 800,
+                queue: false
+            }
         });
-    </script>
+
+        // lazy-load
+        $('img.lazy').load(function () {
+            $container.masonry();
+        });
+        $('img.lazy').lazyload({
+            container: $container
+        });
+    })
+</script>
 #{/set}
